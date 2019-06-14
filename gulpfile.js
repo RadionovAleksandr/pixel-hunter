@@ -1,6 +1,3 @@
-const rollup = require(`gulp-better-rollup`);
-const sourcemaps = require(`gulp-sourcemaps`);
-
 const del = require(`del`);
 const gulp = require(`gulp`);
 const sass = require(`gulp-sass`);
@@ -13,10 +10,8 @@ const minify = require(`gulp-csso`);
 const rename = require(`gulp-rename`);
 const imagemin = require(`gulp-imagemin`);
 const svgstore = require(`gulp-svgstore`);
-const mocha = require(`gulp-mocha`);
-const commonjs = require(`rollup-plugin-commonjs`);
-const posthtml = require("gulp-posthtml");
-const include = require("posthtml-include");
+const rollup = require(`gulp-better-rollup`);
+const sourcemaps = require(`gulp-sourcemaps`);
 
 gulp.task(`style`, () => {
     return gulp.src(`sass/style.scss`).
@@ -38,9 +33,7 @@ gulp.task(`style`, () => {
     pipe(server.stream()).
     pipe(minify()).
     pipe(rename(`style.min.css`)).
-    pipe(gulp.dest(`build/css`)).
-    pipe(posthtml([include()])).
-    pipe(gulp.dest('build'));
+    pipe(gulp.dest(`build/css`));
 });
 
 gulp.task(`sprite`, () => {
@@ -119,16 +112,4 @@ gulp.task(`build`, [`assemble`], () => {
     gulp.start(`imagemin`);
 });
 
-gulp.task(`test`, () => {
-    return gulp
-        .src([`js/**/*.test.js`])
-        .pipe(rollup({
-            plugins: [
-                commonjs()
-            ]
-        }, `cjs`))
-        .pipe(gulp.dest(`build/test`))
-        .pipe(mocha({
-            reporter: `spec`
-        }));
-});
+gulp.task(`test`, () => {});

@@ -1,103 +1,55 @@
-import { createDomElement } from './create-dom-element.js';
+import {
+    makeElement,
+    showScreen
+} from './utils';
+import header from './header';
+import greeting from './greeting';
+import {
+    statsSection
+} from "./stats";
 
-const moduleContent = createDomElement(section, result, `
-    <h2 class="result__title">Победа!</h2>
-    <table class="result__table">
-      <tr>
-        <td class="result__number">1.</td>
-        <td colspan="2">
-          <ul class="stats">
-            <li class="stats__result stats__result--wrong"></li>
-            <li class="stats__result stats__result--slow"></li>
-            <li class="stats__result stats__result--fast"></li>
-            <li class="stats__result stats__result--correct"></li>
-            <li class="stats__result stats__result--wrong"></li>
-            <li class="stats__result stats__result--unknown"></li>
-            <li class="stats__result stats__result--slow"></li>
-            <li class="stats__result stats__result--unknown"></li>
-            <li class="stats__result stats__result--fast"></li>
-            <li class="stats__result stats__result--unknown"></li>
-          </ul>
-        </td>
-        <td class="result__points">× 100</td>
-        <td class="result__total">900</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td class="result__extra">Бонус за скорость:</td>
-        <td class="result__extra">1 <span class="stats__result stats__result--fast"></span></td>
-        <td class="result__points">× 50</td>
-        <td class="result__total">50</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td class="result__extra">Бонус за жизни:</td>
-        <td class="result__extra">2 <span class="stats__result stats__result--alive"></span></td>
-        <td class="result__points">× 50</td>
-        <td class="result__total">100</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td class="result__extra">Штраф за медлительность:</td>
-        <td class="result__extra">2 <span class="stats__result stats__result--slow"></span></td>
-        <td class="result__points">× 50</td>
-        <td class="result__total">-100</td>
-      </tr>
-      <tr>
-        <td colspan="5" class="result__total  result__total--final">950</td>
-      </tr>
-    </table>
-    <table class="result__table">
-      <tr>
-        <td class="result__number">2.</td>
-        <td>
-          <ul class="stats">
-            <li class="stats__result stats__result--wrong"></li>
-            <li class="stats__result stats__result--slow"></li>
-            <li class="stats__result stats__result--fast"></li>
-            <li class="stats__result stats__result--correct"></li>
-            <li class="stats__result stats__result--wrong"></li>
-            <li class="stats__result stats__result--unknown"></li>
-            <li class="stats__result stats__result--slow"></li>
-            <li class="stats__result stats__result--wrong"></li>
-            <li class="stats__result stats__result--fast"></li>
-            <li class="stats__result stats__result--wrong"></li>
-          </ul>
-        </td>
-        <td class="result__total"></td>
-        <td class="result__total  result__total--final">fail</td>
-      </tr>
-    </table>
-    <table class="result__table">
-      <tr>
-        <td class="result__number">3.</td>
-        <td colspan="2">
-          <ul class="stats">
-            <li class="stats__result stats__result--wrong"></li>
-            <li class="stats__result stats__result--slow"></li>
-            <li class="stats__result stats__result--fast"></li>
-            <li class="stats__result stats__result--correct"></li>
-            <li class="stats__result stats__result--wrong"></li>
-            <li class="stats__result stats__result--unknown"></li>
-            <li class="stats__result stats__result--slow"></li>
-            <li class="stats__result stats__result--unknown"></li>
-            <li class="stats__result stats__result--fast"></li>
-            <li class="stats__result stats__result--unknown"></li>
-          </ul>
-        </td>
-        <td class="result__points">× 100</td>
-        <td class="result__total">900</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td class="result__extra">Бонус за жизни:</td>
-        <td class="result__extra">2 <span class="stats__result stats__result--alive"></span></td>
-        <td class="result__points">× 50</td>
-        <td class="result__total">100</td>
-      </tr>
-      <tr>
-        <td colspan="5" class="result__total  result__total--final">950</td>
-      </tr>
-    </table>`);
 
-export default moduleContent;
+const game3ContentSection = makeElement(`section`, `game`, `
+<p class="game__task">Найдите рисунок среди изображений</p>
+<form class="game__content  game__content--triple">
+  <div class="game__option">
+    <img src="http://placehold.it/304x455" alt="Option 1" width="304" height="455">
+  </div>
+  <div class="game__option  game__option--selected">
+    <img src="http://placehold.it/304x455" alt="Option 2" width="304" height="455">
+  </div>
+  <div class="game__option">
+    <img src="http://placehold.it/304x455" alt="Option 3" width="304" height="455">
+  </div>
+</form>
+<ul class="stats">
+  <li class="stats__result stats__result--wrong"></li>
+  <li class="stats__result stats__result--slow"></li>
+  <li class="stats__result stats__result--fast"></li>
+  <li class="stats__result stats__result--correct"></li>
+  <li class="stats__result stats__result--wrong"></li>
+  <li class="stats__result stats__result--unknown"></li>
+  <li class="stats__result stats__result--slow"></li>
+  <li class="stats__result stats__result--unknown"></li>
+  <li class="stats__result stats__result--fast"></li>
+  <li class="stats__result stats__result--unknown"></li>
+</ul>
+</section>`);
+
+const button = game3ContentSection.querySelectorAll('.game__option');
+
+button.forEach((element) => {
+    element.addEventListener(`click`, () => {
+        showScreen(header, statsSection);
+    })
+})
+
+const buttonBack = header.querySelector(`.back`);
+buttonBack.addEventListener(`click`, () => {
+    main.innerHTML = ``;
+    main.appendChild(greeting);
+});
+
+export {
+    game3ContentSection
+};

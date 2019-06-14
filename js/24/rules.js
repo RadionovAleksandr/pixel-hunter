@@ -1,16 +1,22 @@
 import {
     makeElement,
-    showScreen
-} from './utils.js';
-import greeting from './greeting';
-import header from './header';
-import {
-    gameContentHeader,
-    gameContentSection
-} from "./game-1";
+    showScreen,
+} from "./utils";
+import game1 from "./game-1";
+import greeting from "./greeting";
 
-const rulesSection = makeElement(`section`, `greeting`, `
-<section class="rules">
+const rulesHtml = `<header class="header">
+    <button class="back">
+      <span class="visually-hidden">Вернуться к началу</span>
+      <svg class="icon" width="45" height="45" viewBox="0 0 45 45" fill="#000000">
+        <use xlink:href="img/sprite.svg#arrow-left"></use>
+      </svg>
+      <svg class="icon" width="101" height="44" viewBox="0 0 101 44" fill="#000000">
+        <use xlink:href="img/sprite.svg#logo-small"></use>
+      </svg>
+    </button>
+  </header>
+  <section class="rules">
     <h2 class="rules__title">Правила</h2>
     <ul class="rules__description">
       <li>Угадай 10 раз для каждого изображения фото
@@ -25,27 +31,18 @@ const rulesSection = makeElement(`section`, `greeting`, `
       <input class="rules__input" type="text" placeholder="Ваше Имя">
       <button class="rules__button  continue" type="submit" disabled>Go!</button>
     </form>
-  </section>`);
+  </section>`;
 
-
-const rulesButton = rulesSection.querySelector(`.rules__button`);
-const inputName = rulesSection.querySelector(`.rules__input`);
-
-rulesButton.addEventListener('click', () => {
-    showScreen(header, gameContentSection);
-})
-
-const buttonBack = header.querySelector(`.back`);
-buttonBack.addEventListener(`click`, () => {
-    main.innerHTML = ``;
-    main.appendChild(greeting);
-});
+const rules = makeElement(rulesHtml);
+const goBtn = rules.querySelector(`.rules__button`);
+const inputName = rules.querySelector(`.rules__input`);
+const backBtn = rules.querySelector(`.back`);
 
 inputName.addEventListener(`input`, () => {
-    rulesButton.disabled = (inputName.value < 1);
+    goBtn.disabled = (inputName.value < 1);
 });
 
-export {
-    rulesSection,
-    rulesHeader
-};
+goBtn.addEventListener(`click`, () => showScreen(game1));
+backBtn.addEventListener(`click`, () => showScreen(greeting));
+
+export default rules;

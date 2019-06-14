@@ -3,9 +3,16 @@ const mainNode = document.querySelector(`#main`);
 const showScreen = (element) => {
     mainNode.innerHTML = ``;
     mainNode.appendChild(element);
+    const section = mainNode.querySelector(`section`);
+    if (!section.classList.contains(`intro`) && !section.classList.contains(`greeting`)) {
+        mainNode.insertBefore(showHeader(), section);
+        if (section.classList.contains(`game`)) {
+            showHeaderGameInfo();
+        }
+    }
 };
 
-export { showScreen };
+export default showScreen;
 
 
 

@@ -1,14 +1,6 @@
-import {
-    makeElement,
-    showScreen
-} from './utils';
-import greeting from './greeting';
-import header from './header';
-import {
-    game2ContentSection
-} from "./game-2";
+import { createDomElement } from './create-dom-element.js';
 
-const gameContentSection = makeElement(`section`, `game`, `
+const moduleContent = createDomElement(`section`, `game`, `
 <p class="game__task">Угадайте для каждого изображения фото или рисунок?</p>
 <form class="game__content">
   <div class="game__option">
@@ -47,43 +39,4 @@ const gameContentSection = makeElement(`section`, `game`, `
   <li class="stats__result stats__result--unknown"></li>
 </ul>`);
 
-const radioButtonLeftBox = gameContentSection.querySelectorAll(`input[name=question1]`);
-const radioButtonRightBox = gameContentSection.querySelectorAll(`input[name=question2]`);
-let isRadioButtonLeftBox = false;
-let isRadioButtonRightBox = false;
-
-const compareChecked = () => {
-    if (isRadioButtonLeftBox && isRadioButtonRightBox) {
-        showScreen(header, game2ContentSection);
-    }
-}
-
-const buttonBack = header.querySelector(`.back`);
-buttonBack.addEventListener(`click`, () => {
-    main.innerHTML = ``;
-    main.appendChild(greeting);
-});
-
-radioButtonRightBox.forEach((element) => {
-    console.log('forEach')
-    element.addEventListener(`click`, () => {
-        if (element.checked) {
-            isRadioButtonRightBox = true;
-        }
-        compareChecked();
-    });
-});
-
-radioButtonLeftBox.forEach((element) => {
-    console.log('forEach')
-    element.addEventListener(`click`, () => {
-        if (element.checked) {
-            isRadioButtonLeftBox = true;
-        }
-        compareChecked();
-    });
-});
-
-export {
-    gameContentSection
-};
+export default moduleContent;

@@ -1,11 +1,8 @@
 import {
     makeElement,
     showScreen
-} from './utils.js';
-import header from './header';
-import {
-    rulesSection
-} from "./rules";
+} from './utils';
+import rules from "./rules";
 
 const moduleContent = makeElement(`section`, `greeting central--blur`, `
 <img class="greeting__logo" src="img/logo_ph-big.svg" width="201" height="89" alt="Pixel Hunter">
@@ -27,10 +24,9 @@ const moduleContent = makeElement(`section`, `greeting central--blur`, `
   </svg>
 </button>`);
 
-const greetingContinue = moduleContent.querySelector(`.greeting__continue`);
+const greetingContinue = document.querySelector(`.greeting__continue`);
+console.log(greetingContinue)
+greetingContinue.addEventListener('click', showScreen(rules))
 
-greetingContinue.addEventListener('click', () => {
-    showScreen(header, rulesSection);
-});
 
 export default moduleContent;
