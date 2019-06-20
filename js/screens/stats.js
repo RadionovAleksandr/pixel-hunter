@@ -1,8 +1,8 @@
 import {
     makeElement
-} from './utils';
+} from '../utils';
 import greeting from './greeting';
-import header from './header';
+import header from '../header-template';
 
 const statsSection = makeElement(`section`, `result`,
     `<h2 class="result__title">Победа!</h2>
@@ -105,7 +105,7 @@ const statsSection = makeElement(`section`, `result`,
     </table>`
 );
 
-const buttonBack = header.querySelector(`.back`);
+const buttonBack = header().querySelector(`.back`);
 buttonBack.addEventListener(`click`, () => {
     main.innerHTML = ``;
     main.appendChild(greeting);

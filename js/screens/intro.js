@@ -1,16 +1,21 @@
 import {
     makeElement,
     showScreen
-} from './utils';
+} from '../utils';
 import greeting from './greeting';
 
-const moduleContent = makeElement('section', 'intro', `
+const intro = makeElement('section', 'intro', `
 <button class="intro__asterisk asterisk" type="button"><span class="visually-hidden">Продолжить</span>*</button>
 <p class="intro__motto"><sup>*</sup> Это не фото. Это рисунок маслом нидерландского художника-фотореалиста Tjalf Sparnaay.</p>
 `, `intro`);
 
-const asterisk = moduleContent.querySelector(`.intro__asterisk`);
+const asterisk = intro.querySelector(`.intro__asterisk`);
+const introHeader = makeElement(`header`, `header`, ``)
+const greetingHeader = makeElement(`header`, `header`, ``)
 
-asterisk.addEventListener(`click`, () => showScreen(greeting));
+asterisk.addEventListener(`click`, () => showScreen(greetingHeader, greeting));
 
-export default moduleContent;
+export {
+    intro,
+    introHeader
+};

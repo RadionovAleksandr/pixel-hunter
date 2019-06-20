@@ -1,16 +1,17 @@
 import {
     makeElement,
     showScreen
-} from './utils.js';
+} from '../utils.js';
 import greeting from './greeting';
-import header from './header';
+import head from '../header-template';
+import backBtnTemplate from "../back-btn-template";
 import {
-    gameContentHeader,
-    gameContentSection
+    game1
 } from "./game-1";
 
-const rulesSection = makeElement(`section`, `greeting`, `
-<section class="rules">
+
+const rulesHeader = makeElement(`header`, `header`, `${ backBtnTemplate }`)
+const rulesSection = makeElement(`section`, `rules`, `
     <h2 class="rules__title">Правила</h2>
     <ul class="rules__description">
       <li>Угадай 10 раз для каждого изображения фото
@@ -24,18 +25,17 @@ const rulesSection = makeElement(`section`, `greeting`, `
     <form class="rules__form">
       <input class="rules__input" type="text" placeholder="Ваше Имя">
       <button class="rules__button  continue" type="submit" disabled>Go!</button>
-    </form>
-  </section>`);
-
+    </form>`);
 
 const rulesButton = rulesSection.querySelector(`.rules__button`);
 const inputName = rulesSection.querySelector(`.rules__input`);
 
+
 rulesButton.addEventListener('click', () => {
-    showScreen(header, gameContentSection);
+    showScreen(head(), game1());
 })
 
-const buttonBack = header.querySelector(`.back`);
+const buttonBack = rulesHeader.querySelector(`.back`);
 buttonBack.addEventListener(`click`, () => {
     main.innerHTML = ``;
     main.appendChild(greeting);

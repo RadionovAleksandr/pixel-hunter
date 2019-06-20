@@ -1,5 +1,8 @@
+import { gameScreens } from "./game-data";
+
 const QUICK_ANSWER = 10;
 const LONG_ANSWER = 20;
+
 
 export const START_GAME = Object.freeze({
     answer: 0,
@@ -9,9 +12,6 @@ export const START_GAME = Object.freeze({
 
 
 export const scoring = (gameData, userAnswers, lives) => {
-    // за каждый правильный ответ + 100 очков, если он быстрый + 50 если медленный -50 если не быстрый не медленный, ничего.
-    // за каждую жизнб +50 очков
-    // за количество ответов меньшее 10  ноль очков
     if (userAnswers.length < 10) {
         return -1
     }
@@ -36,29 +36,27 @@ export const scoring = (gameData, userAnswers, lives) => {
 }
 
 // подсчет количества жизней
-export const numberLives = (gameData, userAnswers) => {
+export const getLives = (gameData, userAnswers) => {
     let newGame = {};
     Object.assign(newGame, gameData);
     newGame.lives = gameData.lives;
-    console.log(newGame.lives)
-    userAnswers.forEach((element) => {
-        if (!element.isCorrectAnswer) {
-            newGame.lives -= 1;
-        }
-        if (newGame.lives < 0) {
-            return -1
-        }
-    })
+    for (let i = 0; i < userAnswers.length; i++) {
+        userAnswers[i].forEach((element) => {
+            if (!element.isCorrectAnswer) {
+                newGame.lives -= 1;
+            }
+        })
+    }
     return newGame.lives
 }
 
 //изменение уровня
-export const changeLevel = (gameData, userAnswers) => {
+export const getLevel = (gameData, userAnswers) => {
     let newGame = {};
     Object.assign(newGame, gameData);
     const curentLevel = userAnswers.length;
     newGame.Level = curentLevel;
-    return newGame.Level
+    return newGame.Level + 1
 }
 
 export const calculateAnswerTime = (clickTime) => {

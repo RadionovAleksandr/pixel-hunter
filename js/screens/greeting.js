@@ -1,9 +1,11 @@
 import {
     makeElement,
     showScreen
-} from './utils.js';
-import header from './header';
+} from '../utils.js';
+// import header from '../header';
+import header from '../header-template';
 import {
+    rulesHeader,
     rulesSection
 } from "./rules";
 
@@ -28,9 +30,8 @@ const moduleContent = makeElement(`section`, `greeting central--blur`, `
 </button>`);
 
 const greetingContinue = moduleContent.querySelector(`.greeting__continue`);
-
 greetingContinue.addEventListener('click', () => {
-    showScreen(header, rulesSection);
+    showScreen(rulesHeader, rulesSection);
 });
 
 export default moduleContent;
