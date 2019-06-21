@@ -20,29 +20,21 @@
 </svg>
 </button>`;
 
-  // debugger
-  // console.log(data.gamePlay.getLives());
-
   const head = () => {
-          const headerTemplate = makeElement(`header`, `header`, `
+      const headerTemplate = makeElement(`header`, `header`, `
     ${backBtnTemplate}
   <div class="game__timer">NN</div>
   <div class="game__lives">
-  ${new Array(3 - gamePlay.getLives(START_GAME, answers))  //количество потраченных жизней
-    .fill(`<img src="img/heart__empty.svg" class="game__heart" alt=" Missed Life" width="31" height="27">`)
-    .join(``)}
-  ${new Array(gamePlay.getLives(START_GAME, answers))  //количество сохраненных жизней
-      .fill(`<img src="img/heart__full.svg" class="game__heart" alt="Life" width="31" height="27">`)
-      .join(``)}
+  ${gamePlay.getLivesTemplate()}
+  ${gamePlay.getLivesMissTemplate()}
   </div>`);
-    return headerTemplate
+      return headerTemplate
   };
 
   // import { game1 } from "../screens/game-1";
 
 
   const START_GAME = Object.freeze({
-      answer: 0,
       points: 0,
       lives: 3
   });
@@ -198,6 +190,17 @@
           if (this.getLevel(gameData, userAnswers) <= 10 && (this.getLives(gameData, userAnswers)) > 0) {
               return true
           }
+      },
+      getLivesTemplate() {
+          new Array(3 - this.getLives(START_GAME, answers)) //количество потраченных жизней
+              .fill(`<img src="img/heart__empty.svg" class="game__heart" alt=" Missed Life" width="31" height="27">`)
+              .join(``);
+      },
+
+      getLivesMissTemplate() {
+          new Array(this.getLives(START_GAME, answers)) //количество сохраненных жизней
+              .fill(`<img src="img/heart__full.svg" class="game__heart" alt="Life" width="31" height="27">`)
+              .join(``);
       },
 
       // открытие нужного слайда
