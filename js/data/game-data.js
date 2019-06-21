@@ -17,53 +17,29 @@ const QUICK_ANSWER = 10;
 const LONG_ANSWER = 20;
 
 export const scoring = (gameData, userAnswers, lives) => {
-    if (userAnswers.length < 10) {
-        return -1
-    }
-    let newGame = {};
-    Object.assign(newGame, gameData);
-    userAnswers.forEach((element) => {
-        if (element.isCorrectAnswer) {
-            newGame.points += 100;
+        if (userAnswers.length < 10) {
+            return -1
         }
-        if (element.time <= QUICK_ANSWER) {
-            newGame.points += 100
-        }
-        if (element.time > LONG_ANSWER) {
-            newGame.points -= 50;
-        }
-    });
-    newGame.lives = lives;
-    let livesPoints = newGame.lives * 50;
-    newGame.points += livesPoints;
-
-    return newGame.points
-}
-
-// подсчет количества жизней
-export const getLives = (gameData, userAnswers) => {
-    let newGame = {};
-    Object.assign(newGame, gameData);
-    newGame.lives = gameData.lives;
-    for (let i = 0; i < userAnswers.length; i++) {
-        userAnswers[i].forEach((element) => {
-            if (!element.isCorrectAnswer) {
-                newGame.lives -= 1;
+        let newGame = {};
+        Object.assign(newGame, gameData);
+        userAnswers.forEach((element) => {
+            if (element.isCorrectAnswer) {
+                newGame.points += 100;
             }
-        })
+            if (element.time <= QUICK_ANSWER) {
+                newGame.points += 100
+            }
+            if (element.time > LONG_ANSWER) {
+                newGame.points -= 50;
+            }
+        });
+        newGame.lives = lives;
+        let livesPoints = newGame.lives * 50;
+        newGame.points += livesPoints;
+
+        return newGame.points
     }
-    return newGame.lives
-}
-
-//изменение уровня
-export const getLevel = (gameData, userAnswers) => {
-    let newGame = {};
-    Object.assign(newGame, gameData);
-    const curentLevel = userAnswers.length;
-    newGame.Level = curentLevel;
-    return newGame.Level + 1
-}
-
+    // таймер
 export const calculateAnswerTime = (clickTime) => {
     if (clickTime < 0) {
         return -1
@@ -240,48 +216,10 @@ export let gamePlay = {
             return showScreen(header(), game3(data));
         }
     },
-
-    changeGameLevel() {
-        gamePlay.level += 1;
-    },
-    addAnswer(result, time) {
-        gamePlay.answers.push([result, time]);
-    },
-    checkGameOver(data) {
-        const lives = checkLives(data);
-        const level = data.level;
-        if (level === 10 || lives < 0) {
-            return showScreen(stats(data));
-        }
-        return this.showScreenWithData(data);
-    },
-    showScreenWithData(data) {
-        if (data.gameScreens[data.level].type === `two-of-two`) {
-            return showScreen(game1(data));
-        }
-        if (data.gamePlay.screens[data.level].type === `tinder-like`) {
-            return showScreen(game2(data));
-        }
-        if (data.gameScreens[data.level].type === `one-of-three`) {
-            return showScreen(game3(data));
-        }
-        return ``;
-    }
 };
 
 
 gamePlay.resetGame();
-
-console.log(game);
-// console.log(gamePlay.getLives());
-console.log(game.screens);
-// console.log(game.answers);
-// console.log(gamePlay.answers.length);
-
-// export {
-//     gameState
-// };
-
 
 
 export const userNineAnswers = [
@@ -372,4 +310,3 @@ export const userEightLevel = [
     { isCorrectAnswer: true, time: 15 },
     { isCorrectAnswer: true, time: 15 }
 ];
-s

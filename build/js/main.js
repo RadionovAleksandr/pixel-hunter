@@ -213,41 +213,10 @@
               return showScreen(head(), game3(data));
           }
       },
-
-      changeGameLevel() {
-          gamePlay.level += 1;
-      },
-      addAnswer(result, time) {
-          gamePlay.answers.push([result, time]);
-      },
-      checkGameOver(data) {
-          const lives = checkLives(data);
-          const level = data.level;
-          if (level === 10 || lives < 0) {
-              return showScreen(stats(data));
-          }
-          return this.showScreenWithData(data);
-      },
-      showScreenWithData(data) {
-          if (data.gameScreens[data.level].type === `two-of-two`) {
-              return showScreen(game1(data));
-          }
-          if (data.gamePlay.screens[data.level].type === `tinder-like`) {
-              return showScreen(game2(data));
-          }
-          if (data.gameScreens[data.level].type === `one-of-three`) {
-              return showScreen(game3(data));
-          }
-          return ``;
-      }
   };
 
 
   gamePlay.resetGame();
-
-  console.log(game);
-  // console.log(gamePlay.getLives());
-  console.log(game.screens);
 
   const START_GAME$1 = Object.freeze({
       answer: 0,
