@@ -15,12 +15,11 @@ import { START_GAME, scoring, getLives, getLevel, calculateAnswerTime } from '..
 
 
 const game2 = () => {
-    console.log(data.gameScreens[getLevel(START_GAME, data.answers) - 1])
     const game2ContentSection = makeElement(`section`, `game`, `
-<p class="game__task">${data.gameScreens[1].question}</p>
+<p class="game__task">${data.game.screens[data.gamePlay.getLevel(START_GAME, data.answers)-1].question}</p>
     <form class="game__content  game__content--wide">
       <div class="game__option">
-        <img src="${data.gameScreens[getLevel(START_GAME, data.answers)-1].answers[0].imageUrl}" alt="Option 1" width="705" height="455">
+        <img src="${data.game.screens[data.gamePlay.getLevel(START_GAME, data.answers)-1].answers[0].imageUrl}" alt="Option 1" width="705" height="455">
         <label class="game__answer  game__answer--photo">
           <input class="visually-hidden" name="question1" type="radio" value="photo">
           <span>Фото</span>
@@ -44,32 +43,34 @@ const game2 = () => {
       <li class="stats__result stats__result--unknown"></li>
     </ul>`);
 
-    let userlevel = [];
-    console.log(`уровень игры` + getLevel(START_GAME, data.answers))
+    let userAnswer = [];
     const radioButton = game2ContentSection.querySelectorAll(`.game__answer>input`);
-
-    radioButton.forEach((element, index) => {
-        console.log(`жизней осталось` + getLives(START_GAME, data.answers));
-
-
+    radioButton.forEach((element) => {
         element.addEventListener(`click`, () => {
-            if (getLevel(START_GAME, data.answers) <= 10 && (getLives(START_GAME, data.answers) > 0)) {
+            if (data.gamePlay.conditionСheck(data.START_GAME, data.answers)) {
                 if (element.checked) {
-
-                    if (element.value === data.gameScreens[getLevel(START_GAME, data.answers) - 1].answers[0].type) {
-                        userlevel.push({ isCorrectAnswer: true, time: 15 });
+                    if (element.value === data.game.screens[data.gamePlay.getLevel(START_GAME, data.answers) - 1].answers[0].type) {
+                        userAnswer.push({ isCorrectAnswer: true, time: 15 });
                     } else {
-                        userlevel.push({ isCorrectAnswer: false, time: 15 });
+                        userAnswer.push({ isCorrectAnswer: false, time: 15 });
                     }
-                    data.answers.push(userlevel);
+                    data.answers.push(userAnswer);
                 }
-                showScreen(header(), game3())
+                //не получилось вынести программу из game-data.js ругается ролап
+                if (data.game.screens[data.gamePlay.getLevel(data.START_GAME, data.answers) - 1].type === `two-foto`) {
+                    return showScreen(header(), game1());
+                }
+                if (data.game.screens[data.gamePlay.getLevel(data.START_GAME, data.answers) - 1].type === `one-foto`) {
+                    return showScreen(header(), game2());
+                }
+                if (data.game.screens[data.gamePlay.getLevel(data.START_GAME, data.answers) - 1].type === `three-foto`) {
+                    return showScreen(header(), game3());
+                };
             } else {
                 showScreen(header(), statsSection);
             }
         })
     });
-    console.log(data.answers);
 
     const buttonBack = header().querySelector(`.back`);
     buttonBack.addEventListener(`click`, () => {

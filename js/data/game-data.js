@@ -1,8 +1,78 @@
+// import { game1 } from "../screens/game-1";
+// import { game2 } from "../screens/game-2";
+// import { game3 } from "../screens/game-3";
+import {
+    showScreen
+} from '../utils';
+import header from '../header-template';
+
+
 export const START_GAME = Object.freeze({
     answer: 0,
     points: 0,
     lives: 3
 });
+
+const QUICK_ANSWER = 10;
+const LONG_ANSWER = 20;
+
+export const scoring = (gameData, userAnswers, lives) => {
+    if (userAnswers.length < 10) {
+        return -1
+    }
+    let newGame = {};
+    Object.assign(newGame, gameData);
+    userAnswers.forEach((element) => {
+        if (element.isCorrectAnswer) {
+            newGame.points += 100;
+        }
+        if (element.time <= QUICK_ANSWER) {
+            newGame.points += 100
+        }
+        if (element.time > LONG_ANSWER) {
+            newGame.points -= 50;
+        }
+    });
+    newGame.lives = lives;
+    let livesPoints = newGame.lives * 50;
+    newGame.points += livesPoints;
+
+    return newGame.points
+}
+
+// подсчет количества жизней
+export const getLives = (gameData, userAnswers) => {
+    let newGame = {};
+    Object.assign(newGame, gameData);
+    newGame.lives = gameData.lives;
+    for (let i = 0; i < userAnswers.length; i++) {
+        userAnswers[i].forEach((element) => {
+            if (!element.isCorrectAnswer) {
+                newGame.lives -= 1;
+            }
+        })
+    }
+    return newGame.lives
+}
+
+//изменение уровня
+export const getLevel = (gameData, userAnswers) => {
+    let newGame = {};
+    Object.assign(newGame, gameData);
+    const curentLevel = userAnswers.length;
+    newGame.Level = curentLevel;
+    return newGame.Level + 1
+}
+
+export const calculateAnswerTime = (clickTime) => {
+    if (clickTime < 0) {
+        return -1
+    }
+    const startTime = new Date().getTime()
+    const FinishTime = startTime + (clickTime * 1000);
+    const timer = FinishTime - startTime;
+    return timer / 1000
+}
 
 export const gameScreens = [{
         type: `two-foto`,
@@ -121,12 +191,56 @@ export const gameScreens = [{
 ];
 
 export const answers = [];
+export let game;
 
 export let gamePlay = {
     resetGame() {
-        gamePlay = Object.assign({}, START_GAME, { answers: [] });
-        gamePlay.gameScreens = gameScreens;
+        game = Object.assign({}, START_GAME, { answers: [] });
+        game.screens = gameScreens;
     },
+
+    getLives(gameData, userAnswers) {
+        let newGame = {};
+        Object.assign(newGame, gameData);
+        newGame.lives = gameData.lives;
+        for (let i = 0; i < userAnswers.length; i++) {
+            userAnswers[i].forEach((element) => {
+                if (!element.isCorrectAnswer) {
+                    newGame.lives -= 1;
+                }
+            })
+        }
+        return newGame.lives
+    },
+
+    getLevel(gameData, userAnswers) {
+        let newGame = {};
+        Object.assign(newGame, gameData);
+        const curentLevel = userAnswers.length;
+        newGame.Level = curentLevel;
+        return newGame.Level + 1
+    },
+
+    conditionСheck(gameData, userAnswers) {
+        if (this.getLevel(gameData, userAnswers) <= 10 && (this.getLives(gameData, userAnswers)) > 0) {
+            return true
+        }
+    },
+
+    // открытие нужного слайда
+    showGameScreen(gameData, answers) {
+        debugger
+        if (game.screens[this.getLevel(gameData, answers) - 1].type === `two-foto`) {
+            return showScreen(header(), game1(data));
+        }
+        if (game.screens[this.getLevel(gameData, answers) - 1].type === `one-foto`) {
+            return showScreen(header(), game2(data));
+        }
+        if (game.screens[this.getLevel(gameData, answers) - 1].type === `three-foto`) {
+            return showScreen(header(), game3(data));
+        }
+    },
+
     changeGameLevel() {
         gamePlay.level += 1;
     },
@@ -145,20 +259,24 @@ export let gamePlay = {
         if (data.gameScreens[data.level].type === `two-of-two`) {
             return showScreen(game1(data));
         }
-        if (data.gameScreens[data.level].type === `tinder-like`) {
+        if (data.gamePlay.screens[data.level].type === `tinder-like`) {
             return showScreen(game2(data));
         }
         if (data.gameScreens[data.level].type === `one-of-three`) {
             return showScreen(game3(data));
         }
         return ``;
-    },
+    }
 };
 
+
 gamePlay.resetGame();
-// gamePlay.changeGameLevel();
-console.log(gamePlay);
-console.log(gamePlay.answers.length);
+
+console.log(game);
+// console.log(gamePlay.getLives());
+console.log(game.screens);
+// console.log(game.answers);
+// console.log(gamePlay.answers.length);
 
 // export {
 //     gameState
@@ -254,3 +372,4 @@ export const userEightLevel = [
     { isCorrectAnswer: true, time: 15 },
     { isCorrectAnswer: true, time: 15 }
 ];
+s

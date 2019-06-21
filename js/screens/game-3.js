@@ -15,19 +15,19 @@ import { START_GAME, scoring, getLives, getLevel, calculateAnswerTime } from '..
 
 
 const game3 = () => {
-    console.log(data.answers)
-    console.log(`уровень игры` + getLevel(START_GAME, data.answers))
+    // console.log(data.gamePlay.answers)
+    // console.log(`уровень игры` + getLevel(START_GAME, data.gamePlay.answers))
     const game3ContentSection = makeElement(`section`, `game`, `
-<p class="game__task">Найдите рисунок среди изображений</p>
+<p class="game__task">${data.game.screens[data.gamePlay.getLevel(START_GAME, data.answers)-1].question}</p>
 <form class="game__content  game__content--triple">
 <div class="game__option">
-  <img src="${data.gameScreens[getLevel(START_GAME, data.answers) -1].answers[0].imageUrl}" alt="Option 1" width="304" height="455">
+  <img src="${data.game.screens[data.gamePlay.getLevel(START_GAME, data.answers)-1].answers[0].imageUrl}" alt="Option 1" width="304" height="455">
 </div>
 <div class="game__option  game__option--selected">
-  <img src="${data.gameScreens[getLevel(START_GAME, data.answers)-1].answers[1].imageUrl}" alt="Option 2" width="304" height="455">
+  <img src="${data.game.screens[data.gamePlay.getLevel(START_GAME, data.answers)-1].answers[1].imageUrl}" alt="Option 2" width="304" height="455">
 </div>
 <div class="game__option">
-  <img src="${data.gameScreens[getLevel(START_GAME, data.answers)-1].answers[2].imageUrl}" alt="Option 3" width="304" height="455">
+  <img src="${data.game.screens[data.gamePlay.getLevel(START_GAME, data.answers)-1].answers[2].imageUrl}" alt="Option 3" width="304" height="455">
 </div>
 </form>
 <ul class="stats">
@@ -44,24 +44,27 @@ const game3 = () => {
 </ul>
 </section>`);
 
-    let userlevel = [];
-    console.log(`уровень игры` + getLevel(START_GAME, data.answers))
-    console.log(`жизней осталось` + getLives(START_GAME, data.answers));
-    // console.log(`проверка выполения условия на отображения статистики ` + getLives(START_GAME, data.userAnswersMediumThreeLives) >= 0)
-    console.log(data.answers);
+    let userAnswer = [];
     const button = game3ContentSection.querySelectorAll('.game__option');
     button.forEach((element, index) => {
-        console.log(data.gameScreens[getLevel(START_GAME, data.answers) - 1].answers[index].type)
         element.addEventListener(`click`, () => {
-
-            if (getLevel(START_GAME, data.answers) <= 10 && (getLives(START_GAME, data.answers) > 0)) {
-                if (`paint` == data.gameScreens[getLevel(START_GAME, data.answers) - 1].answers[index].type) {
-                    userlevel.push({ isCorrectAnswer: true, time: 15 })
+            if (data.gamePlay.conditionСheck(data.START_GAME, data.answers)) {
+                if (`paint` === data.game.screens[data.gamePlay.getLevel(START_GAME, data.answers) - 1].answers[index].type) {
+                    userAnswer.push({ isCorrectAnswer: true, time: 15 })
                 } else {
-                    userlevel.push({ isCorrectAnswer: false, time: 15 })
+                    userAnswer.push({ isCorrectAnswer: false, time: 15 })
                 }
-                data.answers.push(userlevel);
-                showScreen(header(), game1())
+                data.answers.push(userAnswer);
+                //не получилось вынести программу из game-data.js ругается ролап
+                if (data.game.screens[data.gamePlay.getLevel(data.START_GAME, data.answers) - 1].type === `two-foto`) {
+                    return showScreen(header(), game1());
+                }
+                if (data.game.screens[data.gamePlay.getLevel(data.START_GAME, data.answers) - 1].type === `one-foto`) {
+                    return showScreen(header(), game2());
+                }
+                if (data.game.screens[data.gamePlay.getLevel(data.START_GAME, data.answers) - 1].type === `three-foto`) {
+                    return showScreen(header(), game3());
+                };
             } else {
                 showScreen(header(), statsSection);
             }
