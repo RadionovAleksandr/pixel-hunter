@@ -2,8 +2,6 @@ import {
     makeElement,
     showScreen
 } from '../utils.js';
-// import header from '../header';
-import header from '../header-template';
 import {
     rulesHeader,
     rulesSection

@@ -9,7 +9,6 @@ import {
     game1
 } from "./game-1";
 
-
 const rulesHeader = makeElement(`header`, `header`, `${ backBtnTemplate }`)
 const rulesSection = makeElement(`section`, `rules`, `
     <h2 class="rules__title">Правила</h2>

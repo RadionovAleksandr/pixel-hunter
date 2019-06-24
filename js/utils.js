@@ -1,10 +1,3 @@
-import {
-    START_GAME,
-    getLives
-
-} from "./data/functions.test";
-
-
 const main = document.querySelector(`#main`);
 
 const makeElement = (tagName, className, template) => {
