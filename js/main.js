@@ -1,9 +1,10 @@
 import {
     showScreen
 } from "./utils";
-import {
-    intro,
-    introHeader
-} from './screens/intro';
+import intro from "./screens/intro";
+console.log(intro())
+console.log(intro().template)
+console.log(intro().element)
+console.log(intro().render())
 
-showScreen(introHeader, intro);
+showScreen(intro().element);

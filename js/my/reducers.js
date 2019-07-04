@@ -3,7 +3,6 @@
 import { showScreen } from './utils';
 import header from './header-template';
 // import state from './state'
-import stateGame from './data/state';
 
 
 export const START_GAME = Object.freeze({
@@ -51,7 +50,7 @@ export const calculateAnswerTime = (clickTime) => {
 
 export let gamePlay = {
 
-    getLives() {
+    getLives(gameData, userAnswers) {
         // debugger
         // let newGame = {};
         // Object.assign(newGame, gameData);
@@ -67,27 +66,15 @@ export let gamePlay = {
         // return newGame.lives
 
         let newGame = {};
-        Object.assign(newGame, START_GAME);
-        newGame.lives = START_GAME.lives;
-        stateGame.answers.forEach((element) => {
+        Object.assign(newGame, gameData);
+        newGame.lives = gameData.lives;
+        userAnswers.forEach((element) => {
             if (!element.isCorrectAnswer) {
                 newGame.lives -= 1;
             }
         })
         console.log(newGame.lives)
         return newGame.lives
-    },
-
-    getLivesTemplate() {
-        return new Array(this.getLives()) //количество потраченных жизней
-            .fill(`<img src="img/heart__full.svg" class="game__heart" alt=" Missed Life" width="31" height="27">`)
-            .join(``);
-    },
-
-    getLivesMissTemplate() {
-        new Array(3 - this.getLives()) //количество сохраненных жизней
-            .fill(`<img src="img/heart__empty.svg" class="game__heart" alt="Life" width="31" height="27">`)
-            .join(``)
     },
 
     getLevel(gameData, userAnswers) {
@@ -108,6 +95,17 @@ export let gamePlay = {
         if (this.getLevel(gameData, userAnswers) <= 10 && (this.getLives(gameData, userAnswers)) > 0) {
             return true
         }
+    },
+    getLivesTemplate(gameData, state) {
+        return new Array(3 - this.getLives(gameData, state)) //количество потраченных жизней
+            .fill(`<img src="img/heart__empty.svg" class="game__heart" alt=" Missed Life" width="31" height="27">`)
+            .join(``);
+    },
+
+    getLivesMissTemplate(gameData, state) {
+        new Array(this.getLives(gameData, state)) //количество сохраненных жизней
+            .fill(`<img src="img/heart__full.svg" class="game__heart" alt="Life" width="31" height="27">`)
+            .join(``)
     },
 
     getStatsTemplate(state) {
@@ -136,6 +134,8 @@ export let gamePlay = {
         //         <li class = "stats__result stats__result--unknown" > < /li>
         //         <li class = "stats__result stats__result--unknown" > < /li>`
     },
+
+
     getQuestionTemplate(state) {
         return state.screens[this.getLevel(START_GAME, state.answers) - 1].question
     },
@@ -185,22 +185,6 @@ export let gamePlay = {
             return showScreen(header(), screen3());
         }
     },
-
-    statResultCheck(el) {
-        if (this.getLevel(START_GAME, stateGame.answers) - 1 === 0) {
-            return
-        } else {
-            stateGame.answers.forEach((element, index) => {
-                const statsResult = el.querySelectorAll('.stats__result');
-                if (!element.isCorrectAnswer) {
-
-                    statsResult[index].classList.add(`stats__result--wrong`)
-                } else {
-                    statsResult[index].classList.add(`stats__result--correct`)
-                }
-            })
-        }
-    }
 };
 // console.log(gamePlay.getLivesTemplate())
 

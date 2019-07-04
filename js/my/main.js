@@ -1,6 +1,9 @@
 import {
     showScreen
 } from "./utils";
-import intro from './intro';
+import intro from "./screens/intro";
+console.log(intro)
+console.log(intro().element)
+console.log(intro().render)
 
-showScreen(intro);
+showScreen(intro().element);

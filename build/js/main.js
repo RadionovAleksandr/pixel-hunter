@@ -1,23 +1,151 @@
 (function () {
     'use strict';
 
-    const main$1 = document.querySelector(`#main`);
+    const main = document.querySelector(`#main`);
 
-    const makeElement = (tagName, className, template) => {
-        let domElement = document.createElement(tagName);
-        let classNames = className.split(' ');
-        classNames.forEach(function(classNamesItem) {
-            domElement.classList.add(classNamesItem);
-            domElement.innerHTML = template;
-        });
-        return domElement
+    const showScreen = (e) => {
+        console.log(e);
+        main.innerHTML = ``;
+        main.appendChild(e);
     };
 
-    const showScreen = (head, section) => {
-        main$1.innerHTML = ``;
-        main$1.appendChild(head);
-        main$1.appendChild(section);
-    };
+    // const main = document.querySelector(`#main`);
+
+    // const makeElement = (tagName, className, template) => {
+    //     let domElement = document.createElement(tagName);
+    //     let classNames = className.split(' ');
+    //     classNames.forEach(function(classNamesItem) {
+    //         domElement.classList.add(classNamesItem)
+    //         domElement.innerHTML = template;
+    //     });
+    //     return domElement
+    // }
+
+    // const showScreen = (head, section) => {
+    //     main.innerHTML = ``;
+    //     main.appendChild(head);
+    //     main.appendChild(section);
+    // };
+
+    // export {
+    //     makeElement,
+    //     showScreen,
+    // };
+
+    class AbstractView {
+
+        get template() {}
+        get element() {
+            // debugger
+            if (this._element) {
+                return this._element;
+            }
+            this._element = this.render();
+            this.bind(this._element);
+            return this._element;
+        }
+        render() {
+            const div = document.createElement(`div`);
+            div.innerHTML = this.template.trim();
+            return div;
+        }
+        bind() {}
+    }
+
+    class Intro extends AbstractView {
+        constructor() { //разобраться и понять
+            super();
+        };
+
+        get template() {
+            return `
+        <section class="intro">
+            <button class="intro__asterisk asterisk" type="button">
+            <span class="visually-hidden">Продолжить</span>*</button>
+            <p class="intro__motto"><sup>*</sup> Это не фото. Это рисунок маслом нидерландского художника-фотореалиста Tjalf Sparnaay.</p>
+        </section>`
+        };
+
+        bind() {
+            const asterisk = this.element.querySelector(`.intro__asterisk`);
+            asterisk.addEventListener(`click`, (e) => {
+                e.preventDefault();
+                this.onButtonClick();
+            });
+        }
+        onButtonClick() {}; //разобраться и понять причину вызоваы
+    }
+
+
+
+
+
+
+
+
+
+
+
+    // import {
+    //   makeElement,
+    //   showScreen
+    // } from '../utils';
+    // import greeting from './greeting';
+
+    // const intro = makeElement('section', 'intro', `
+    // <button class="intro__asterisk asterisk" type="button"><span class="visually-hidden">Продолжить</span>*</button>
+    // <p class="intro__motto"><sup>*</sup> Это не фото. Это рисунок маслом нидерландского художника-фотореалиста Tjalf Sparnaay.</p>
+    // `, `intro`);
+
+    // const asterisk = intro.querySelector(`.intro__asterisk`);
+    // const introHeader = makeElement(`header`, `header`, ``)
+    // const greetingHeader = makeElement(`header`, `header`, ``)
+
+    // asterisk.addEventListener(`click`, () => showScreen(greetingHeader, greeting));
+
+    // export {
+    //   intro,
+    //   introHeader
+    // };
+
+    class Intro$1 extends AbstractView {
+        constructor() { //разобраться и понять
+            super();
+        };
+
+        get template() {
+            return `<section class="greeting central--blur">
+<img class="greeting__logo" src="img/logo_ph-big.svg" width="201" height="89" alt="Pixel Hunter">
+<div class="greeting__asterisk asterisk"><span class="visually-hidden">Я просто красивая звёздочка</span>*</div>
+<div class="greeting__challenge">
+  <h3 class="greeting__challenge-title">Лучшие художники-фотореалисты бросают тебе вызов!</h3>
+  <p class="greeting__challenge-text">Правила игры просты:</p>
+  <ul class="greeting__challenge-list">
+    <li>Нужно отличить рисунок от фотографии и сделать выбор.</li>
+    <li>Задача кажется тривиальной, но не думай, что все так просто.</li>
+    <li>Фотореализм обманчив и коварен.</li>
+    <li>Помни, главное — смотреть очень внимательно.</li>
+  </ul>
+</div>
+<button class="greeting__continue" type="button">
+  <span class="visually-hidden">Продолжить</span>
+  <svg class="icon" width="64" height="64" viewBox="0 0 64 64" fill="#000000">
+    <use xlink:href="img/sprite.svg#arrow-right"></use>
+  </svg>
+</button>
+<section>`
+        }
+
+        bind() {
+            const asterisk = this.element.querySelector(`.greeting__continue`);
+            asterisk.addEventListener(`click`, (e) => {
+                e.preventDefault();
+                // console.log(`Слушатель на greeteng`)
+                this.onButtonClick();
+            });
+        }
+        onButtonClick() {};
+    }
 
     const backBtnTemplate = `<button class="back">
 <span class="visually-hidden">Вернуться к началу</span>
@@ -28,155 +156,6 @@
   <use xlink:href="img/sprite.svg#logo-small"></use>
 </svg>
 </button>`;
-
-    // import gameScreens from './data-base';
-    // import state from './state'
-
-
-    const START_GAME = Object.freeze({
-        points: 0,
-        lives: 3,
-        level: 0
-    });
-
-    let gamePlay = {
-
-        getLives(gameData, userAnswers) {
-            // debugger
-            // let newGame = {};
-            // Object.assign(newGame, gameData);
-            // newGame.lives = gameData.lives;
-            // for (let i = 0; i < userAnswers.length; i++) {
-            //     console.log(userAnswers[i])
-            //     userAnswers[i].forEach((element) => {
-            //         if (!element.isCorrectAnswer) {
-            //             newGame.lives -= 1;
-            //         }
-            //     })
-            // }
-            // return newGame.lives
-
-            let newGame = {};
-            Object.assign(newGame, gameData);
-            newGame.lives = gameData.lives;
-            userAnswers.forEach((element) => {
-                if (!element.isCorrectAnswer) {
-                    newGame.lives -= 1;
-                }
-            });
-            console.log(newGame.lives);
-            return newGame.lives
-        },
-
-        getLevel(gameData, userAnswers) {
-            let newGame = {};
-            Object.assign(newGame, gameData);
-            let curentLevel;
-            console.log(userAnswers.length);
-            if (userAnswers.length === undefined) {
-                curentLevel = 0;
-            } else {
-                curentLevel = userAnswers.length;
-            }
-            newGame.level = curentLevel;
-            return newGame.level + 1
-        },
-
-        conditionСheck(gameData, userAnswers) {
-            if (this.getLevel(gameData, userAnswers) <= 10 && (this.getLives(gameData, userAnswers)) > 0) {
-                return true
-            }
-        },
-        getLivesTemplate(gameData, state) {
-            return new Array(3 - this.getLives(gameData, state)) //количество потраченных жизней
-                .fill(`<img src="img/heart__empty.svg" class="game__heart" alt=" Missed Life" width="31" height="27">`)
-                .join(``);
-        },
-
-        getLivesMissTemplate(gameData, state) {
-            new Array(this.getLives(gameData, state)) //количество сохраненных жизней
-                .fill(`<img src="img/heart__full.svg" class="game__heart" alt="Life" width="31" height="27">`)
-                .join(``);
-        },
-
-        getStatsTemplate(state) {
-            new Array(10)
-                .fill(`< li class = "stats__result stats__result--unknown">`)
-                .join(``);
-            // if (!state[this.getLevel(START_GAME, state) - 1].isCorrectAnswer) {
-            //     const statsResult = document.querySelectorAll('stats__result');
-            //     statsResult[this.getLevel(START_GAME, state) - 1].classList.add(`stats__result--wrong`)
-            // }
-        },
-
-        PropertyAnswertemplate() {
-            const statsResult = document.querySelectorAll(`stats__result`);
-            if (!stateGame.answers[getLevel(START_GAME, stateGame.answers) - 1].isCorrectAnswer) {
-                statsResult[getLevel(START_GAME, stateGame.answers) - 1];
-            }
-            //     `< li class = "stats__result stats__result--wrong" > < /li> <
-            //         li class = "stats__result stats__result--slow" > < /li> <
-            //         li class = "stats__result stats__result--fast" > < /li> <
-            //         li class = "stats__result stats__result--correct" > < /li>
-            //         <li class = "stats__result stats__result--unknown" > < /li>
-            //         <li class = "stats__result stats__result--unknown" > < /li>
-            //         <li class = "stats__result stats__result--unknown" > < /li>
-            //         <li class = "stats__result stats__result--unknown" > < /li>
-            //         <li class = "stats__result stats__result--unknown" > < /li>
-            //         <li class = "stats__result stats__result--unknown" > < /li>`
-        },
-
-
-        getQuestionTemplate(state) {
-            return state.screens[this.getLevel(START_GAME, state.answers) - 1].question
-        },
-
-        getImageTemplate(state, index) {
-            return state.screens[this.getLevel(START_GAME, state.answers) - 1].answers[index].imageUrl
-        },
-
-        pushAnswer(state, index, arrAnswer, element) {
-            if (state.screens[this.getLevel(START_GAME, state.answers) - 1].type === `three-foto`) {
-                if (`paint` === state.screens[this.getLevel(START_GAME, state.answers) - 1].answers[index].type) {
-                    arrAnswer.push({
-                        isCorrectAnswer: true,
-                        time: 15
-                    });
-                } else {
-                    arrAnswer.push({
-                        isCorrectAnswer: false,
-                        time: 15
-                    });
-                }
-            } else {
-                if (element.value === state.screens[this.getLevel(START_GAME, state.answers) - 1].answers[index].type) {
-                    arrAnswer.push({
-                        isCorrectAnswer: true,
-                        time: 15
-                    });
-                } else {
-                    arrAnswer.push({
-                        isCorrectAnswer: false,
-                        time: 15
-                    });
-                }
-            }
-        },
-
-        // открытие нужного слайда
-        showGameScreen(state, gameData, screen1, screen2, screen3) {
-            // debugger
-            if (state.screens[this.getLevel(gameData, state.answers) - 1].type === `two-foto`) {
-                return showScreen(head(), screen1());
-            }
-            if (state.screens[this.getLevel(gameData, state.answers) - 1].type === `one-foto`) {
-                return showScreen(head(), screen2());
-            }
-            if (state.screens[this.getLevel(gameData, state.answers) - 1].type === `three-foto`) {
-                return showScreen(head(), screen3());
-            }
-        },
-    };
 
     const gameScreens = [{
             type: `two-foto`,
@@ -296,7 +275,7 @@
 
     // import * as data from './game-data';
 
-    const START_GAME$1 = Object.freeze({
+    const START_GAME = Object.freeze({
         points: 0,
         lives: 3
     });
@@ -304,209 +283,286 @@
     let game;
 
     const resetGame = (state, dataScreens) => {
-        state = Object.assign({}, START_GAME$1, { answers: [] });
+        state = Object.assign({}, START_GAME, { answers: [] });
         state.screens = dataScreens;
         return state
     };
 
-    let stateGame$1 = resetGame(game, gameScreens);
+    let stateGame = resetGame(game, gameScreens);
 
-    console.log(gamePlay.getLivesTemplate(START_GAME, stateGame$1.answers));
-    console.log(new Array(gamePlay.getLives(START_GAME, stateGame$1.answers))
-        .fill(`<img src="img/heart__empty.svg" class="game__heart" alt=" Missed Life" width="31" height="27">`)
-        .join(``));
-
+    // console.log(data.gamePlay.getLivesTemplate(data.START_GAME, stateGame.answers))
+    // console.log(new Array(data.gamePlay.getLives(data.START_GAME, stateGame.answers))
+    //     .fill(`<img src="img/heart__empty.svg" class="game__heart" alt=" Missed Life" width="31" height="27">`)
+    //     .join(``))
     const head = () => {
-        const headerTemplate = makeElement(`header`, `header`, `
+        const headerTemplate =
+            `<header class="header">
     ${backBtnTemplate}
   <div class="game__timer">NN</div>
   <div class="game__lives">
-  ${gamePlay.getLivesTemplate(START_GAME, stateGame$1.answers)}
-  ${gamePlay.getLivesMissTemplate(START_GAME, stateGame$1.answers)}
-  </div>`);
+  ${gamePlay.getLivesTemplate()}
+  ${gamePlay.getLivesMissTemplate()}
+  </div>
+  </header>`;
         return headerTemplate
     };
 
-    const statsSection = makeElement(`section`, `result`,
-        `<h2 class="result__title">Победа!</h2>
-    <table class="result__table">
-      <tr>
-        <td class="result__number">1.</td>
-        <td colspan="2">
-          <ul class="stats">
-            <li class="stats__result stats__result--wrong"></li>
-            <li class="stats__result stats__result--slow"></li>
-            <li class="stats__result stats__result--fast"></li>
-            <li class="stats__result stats__result--correct"></li>
-            <li class="stats__result stats__result--wrong"></li>
-            <li class="stats__result stats__result--unknown"></li>
-            <li class="stats__result stats__result--slow"></li>
-            <li class="stats__result stats__result--unknown"></li>
-            <li class="stats__result stats__result--fast"></li>
-            <li class="stats__result stats__result--unknown"></li>
-          </ul>
-        </td>
-        <td class="result__points">× 100</td>
-        <td class="result__total">900</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td class="result__extra">Бонус за скорость:</td>
-        <td class="result__extra">1 <span class="stats__result stats__result--fast"></span></td>
-        <td class="result__points">× 50</td>
-        <td class="result__total">50</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td class="result__extra">Бонус за жизни:</td>
-        <td class="result__extra">2 <span class="stats__result stats__result--alive"></span></td>
-        <td class="result__points">× 50</td>
-        <td class="result__total">100</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td class="result__extra">Штраф за медлительность:</td>
-        <td class="result__extra">2 <span class="stats__result stats__result--slow"></span></td>
-        <td class="result__points">× 50</td>
-        <td class="result__total">-100</td>
-      </tr>
-      <tr>
-        <td colspan="5" class="result__total  result__total--final">950</td>
-      </tr>
-    </table>
-    <table class="result__table">
-      <tr>
-        <td class="result__number">2.</td>
-        <td>
-          <ul class="stats">
-            <li class="stats__result stats__result--wrong"></li>
-            <li class="stats__result stats__result--slow"></li>
-            <li class="stats__result stats__result--fast"></li>
-            <li class="stats__result stats__result--correct"></li>
-            <li class="stats__result stats__result--wrong"></li>
-            <li class="stats__result stats__result--unknown"></li>
-            <li class="stats__result stats__result--slow"></li>
-            <li class="stats__result stats__result--wrong"></li>
-            <li class="stats__result stats__result--fast"></li>
-            <li class="stats__result stats__result--wrong"></li>
-          </ul>
-        </td>
-        <td class="result__total"></td>
-        <td class="result__total  result__total--final">fail</td>
-      </tr>
-    </table>
-    <table class="result__table">
-      <tr>
-        <td class="result__number">3.</td>
-        <td colspan="2">
-          <ul class="stats">
-            <li class="stats__result stats__result--wrong"></li>
-            <li class="stats__result stats__result--slow"></li>
-            <li class="stats__result stats__result--fast"></li>
-            <li class="stats__result stats__result--correct"></li>
-            <li class="stats__result stats__result--wrong"></li>
-            <li class="stats__result stats__result--unknown"></li>
-            <li class="stats__result stats__result--slow"></li>
-            <li class="stats__result stats__result--unknown"></li>
-            <li class="stats__result stats__result--fast"></li>
-            <li class="stats__result stats__result--unknown"></li>
-          </ul>
-        </td>
-        <td class="result__points">× 100</td>
-        <td class="result__total">900</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td class="result__extra">Бонус за жизни:</td>
-        <td class="result__extra">2 <span class="stats__result stats__result--alive"></span></td>
-        <td class="result__points">× 50</td>
-        <td class="result__total">100</td>
-      </tr>
-      <tr>
-        <td colspan="5" class="result__total  result__total--final">950</td>
-      </tr>
-    </table>`
-    );
+    // import gameScreens from './data-base';
 
-    const buttonBack = head().querySelector(`.back`);
-    buttonBack.addEventListener(`click`, () => {
-        main.innerHTML = ``;
-        main.appendChild(moduleContent);
+
+    const START_GAME$1 = Object.freeze({
+        points: 0,
+        lives: 3,
+        level: 0
     });
 
-    const game3 = () => {
-            const game3ContentSection = makeElement(`section`, `game`, `
-<p class="game__task">${gamePlay.getQuestionTemplate(stateGame$1)}</p>
+    let gamePlay = {
+
+        getLives() {
+            // debugger
+            // let newGame = {};
+            // Object.assign(newGame, gameData);
+            // newGame.lives = gameData.lives;
+            // for (let i = 0; i < userAnswers.length; i++) {
+            //     console.log(userAnswers[i])
+            //     userAnswers[i].forEach((element) => {
+            //         if (!element.isCorrectAnswer) {
+            //             newGame.lives -= 1;
+            //         }
+            //     })
+            // }
+            // return newGame.lives
+
+            let newGame = {};
+            Object.assign(newGame, START_GAME$1);
+            newGame.lives = START_GAME$1.lives;
+            stateGame.answers.forEach((element) => {
+                if (!element.isCorrectAnswer) {
+                    newGame.lives -= 1;
+                }
+            });
+            console.log(newGame.lives);
+            return newGame.lives
+        },
+
+        getLivesTemplate() {
+            return new Array(this.getLives()) //количество потраченных жизней
+                .fill(`<img src="img/heart__full.svg" class="game__heart" alt=" Missed Life" width="31" height="27">`)
+                .join(``);
+        },
+
+        getLivesMissTemplate() {
+            new Array(3 - this.getLives()) //количество сохраненных жизней
+                .fill(`<img src="img/heart__empty.svg" class="game__heart" alt="Life" width="31" height="27">`)
+                .join(``);
+        },
+
+        getLevel(gameData, userAnswers) {
+            let newGame = {};
+            Object.assign(newGame, gameData);
+            let curentLevel;
+            console.log(userAnswers.length);
+            if (userAnswers.length === undefined) {
+                curentLevel = 0;
+            } else {
+                curentLevel = userAnswers.length;
+            }
+            newGame.level = curentLevel;
+            return newGame.level + 1
+        },
+
+        conditionСheck(gameData, userAnswers) {
+            if (this.getLevel(gameData, userAnswers) <= 10 && (this.getLives(gameData, userAnswers)) > 0) {
+                return true
+            }
+        },
+
+        getStatsTemplate(state) {
+            new Array(10)
+                .fill(`< li class = "stats__result stats__result--unknown">`)
+                .join(``);
+            // if (!state[this.getLevel(START_GAME, state) - 1].isCorrectAnswer) {
+            //     const statsResult = document.querySelectorAll('stats__result');
+            //     statsResult[this.getLevel(START_GAME, state) - 1].classList.add(`stats__result--wrong`)
+            // }
+        },
+
+        PropertyAnswertemplate() {
+            const statsResult = document.querySelectorAll(`stats__result`);
+            if (!stateGame.answers[getLevel(START_GAME$1, stateGame.answers) - 1].isCorrectAnswer) {
+                statsResult[getLevel(START_GAME$1, stateGame.answers) - 1];
+            }
+            //     `< li class = "stats__result stats__result--wrong" > < /li> <
+            //         li class = "stats__result stats__result--slow" > < /li> <
+            //         li class = "stats__result stats__result--fast" > < /li> <
+            //         li class = "stats__result stats__result--correct" > < /li>
+            //         <li class = "stats__result stats__result--unknown" > < /li>
+            //         <li class = "stats__result stats__result--unknown" > < /li>
+            //         <li class = "stats__result stats__result--unknown" > < /li>
+            //         <li class = "stats__result stats__result--unknown" > < /li>
+            //         <li class = "stats__result stats__result--unknown" > < /li>
+            //         <li class = "stats__result stats__result--unknown" > < /li>`
+        },
+        getQuestionTemplate(state) {
+            return state.screens[this.getLevel(START_GAME$1, state.answers) - 1].question
+        },
+
+        getImageTemplate(state, index) {
+            return state.screens[this.getLevel(START_GAME$1, state.answers) - 1].answers[index].imageUrl
+        },
+
+        pushAnswer(state, index, arrAnswer, element) {
+            if (state.screens[this.getLevel(START_GAME$1, state.answers) - 1].type === `three-foto`) {
+                if (`paint` === state.screens[this.getLevel(START_GAME$1, state.answers) - 1].answers[index].type) {
+                    arrAnswer.push({
+                        isCorrectAnswer: true,
+                        time: 15
+                    });
+                } else {
+                    arrAnswer.push({
+                        isCorrectAnswer: false,
+                        time: 15
+                    });
+                }
+            } else {
+                if (element.value === state.screens[this.getLevel(START_GAME$1, state.answers) - 1].answers[index].type) {
+                    arrAnswer.push({
+                        isCorrectAnswer: true,
+                        time: 15
+                    });
+                } else {
+                    arrAnswer.push({
+                        isCorrectAnswer: false,
+                        time: 15
+                    });
+                }
+            }
+        },
+
+        // открытие нужного слайда
+        showGameScreen(state, gameData, screen1, screen2, screen3) {
+            // debugger
+            if (state.screens[this.getLevel(gameData, state.answers) - 1].type === `two-foto`) {
+                return showScreen(head(), screen1());
+            }
+            if (state.screens[this.getLevel(gameData, state.answers) - 1].type === `one-foto`) {
+                return showScreen(head(), screen2());
+            }
+            if (state.screens[this.getLevel(gameData, state.answers) - 1].type === `three-foto`) {
+                return showScreen(head(), screen3());
+            }
+        },
+
+        statResultCheck(el) {
+            if (this.getLevel(START_GAME$1, stateGame.answers) - 1 === 0) {
+                return
+            } else {
+                stateGame.answers.forEach((element, index) => {
+                    const statsResult = el.querySelectorAll('.stats__result');
+                    if (!element.isCorrectAnswer) {
+
+                        statsResult[index].classList.add(`stats__result--wrong`);
+                    } else {
+                        statsResult[index].classList.add(`stats__result--correct`);
+                    }
+                });
+            }
+        }
+    };
+
+    class Intro$2 extends AbstractView {
+        constructor() { //разобраться и понять
+            super();
+        };
+        get template() {
+                return `
+${head()}
+<section class="game">
+<p class="game__task">${gamePlay.getQuestionTemplate(stateGame)}</p>
 <form class="game__content  game__content--triple">
 <div class="game__option">
-  <img src="${gamePlay.getImageTemplate(stateGame$1, 0)}" alt="Option 1" width="304" height="455">
+  <img src="${gamePlay.getImageTemplate(stateGame, 0)}" alt="Option 1" width="304" height="455">
 </div>
 <div class="game__option  game__option--selected">
-  <img src="${gamePlay.getImageTemplate(stateGame$1, 1)}" alt="Option 2" width="304" height="455">
+  <img src="${gamePlay.getImageTemplate(stateGame, 1)}" alt="Option 2" width="304" height="455">
 </div>
 <div class="game__option">
-  <img src="${gamePlay.getImageTemplate(stateGame$1, 2)}" alt="Option 3" width="304" height="455">
+  <img src="${gamePlay.getImageTemplate(stateGame, 2)}" alt="Option 3" width="304" height="455">
 </div>
 </form>
 <ul class="stats">
 ${new Array(10)
-  .fill(`<li class="stats__result stats__result--unknown">`)
-  .join(``)}
+        .fill(`<li class="stats__result stats__result--unknown">`)
+        .join(``)}
 </ul>
-</section>`);
+</section>`
+      }
 
-
-        const button = game3ContentSection.querySelectorAll('.game__option');
-        const statResultCheck = () => {
-          debugger
-          console.log(stateGame$1.answers[gamePlay.getLevel(START_GAME, stateGame$1.answers) -1]);
-          console.log(stateGame$1.answers);
-          console.log(gamePlay.getLevel(START_GAME, stateGame$1.answers) - 1);
-          // console.log(stateGame.answers)
-          if (gamePlay.getLevel(START_GAME, stateGame$1.answers) - 1 === 0) {
-            return
-          } else {
-            stateGame$1.answers.forEach( (element, index) => {
-              const statsResult = game3ContentSection.querySelectorAll('.stats__result');
-             if (!element.isCorrectAnswer) {
-
-
-              statsResult[index].classList.add(`stats__result--wrong`);
-             } else {
-              statsResult[index].classList.add(`stats__result--correct`);
-             }
-            });
-          }
-          // return
-        };
-        statResultCheck();
+      bind() {
+        const button = this.element.querySelectorAll('.game__option');
         button.forEach((element, index) => {
-            element.addEventListener(`click`, () => {
-                if (gamePlay.conditionСheck(START_GAME, stateGame$1.answers)) {
-                    gamePlay.pushAnswer(stateGame$1, index, stateGame$1.answers, element);
-
-                    gamePlay.showGameScreen(stateGame$1, START_GAME, game1, game2, game3);
-                } else {
-                    showScreen(head(), statsSection);
-                }
-            });
+          element.addEventListener(`click`, () => {
+            if (gamePlay.conditionСheck(START_GAME$1, stateGame.answers)) {
+              gamePlay.pushAnswer(stateGame, index, stateGame.answers, element);
+              this.showGame1();
+              // data.gamePlay.showGameScreen(stateGame, data.START_GAME, game1, game2, game3);
+            } else {
+              this.showStats();
+            }
+          });
         });
+      }
 
-        const buttonBack = head().querySelector(`.back`);
-        buttonBack.addEventListener(`click`, () => {
-            main.innerHTML = ``;
-            main.appendChild(moduleContent);
-        });
-        console.log(stateGame$1);
-        return game3ContentSection
+      statResultCheck() {
+        // console.log(stateGame.answers)
+        if (gamePlay.getLevel(START_GAME$1, stateGame.answers) - 1 === 0) {
+          return
+        } else {
+          stateGame.answers.forEach((element, index) => {
+            const statsResult = this.element.querySelectorAll('.stats__result');
+            if (!element.isCorrectAnswer) {
+              statsResult[index].classList.add(`stats__result--wrong`);
+            } else {
+              statsResult[index].classList.add(`stats__result--correct`);
+            }
+          });
+        }
+      }
+
+      onButtonBackClick() {}
+      showGame1() {}
+      showStats() {}
+    }
+
+    var game3 = () => {
+        const intro = new Intro$2();
+        intro.onButtonBackClick = () => {
+            showScreen(greeting().element);
+        };
+        intro.showGame1 = () => {
+            showScreen(game1().element);
+        };
+
+        intro.statResultCheck();
+            // отрисовываем статистику
+        intro.showStats = () => {
+            console.log(`показываю статистику`);
+        };
+        return intro;
     };
 
-    const game2 = () => {
-            const game2ContentSection = makeElement(`section`, `game`, `
-<p class="game__task">${gamePlay.getQuestionTemplate(stateGame$1)}</p>
+    class Intro$3 extends AbstractView {
+        constructor() { //разобраться и понять
+            super();
+        };
+        get template() {
+                return `
+${head()}
+        <section class="game"
+<p class="game__task">${gamePlay.getQuestionTemplate(stateGame)}</p>
     <form class="game__content  game__content--wide">
       <div class="game__option">
-        <img src="${gamePlay.getImageTemplate(stateGame$1, 0)}" alt="Option 1" width="705" height="455">
+        <img src="${gamePlay.getImageTemplate(stateGame, 0)}" alt="Option 1" width="705" height="455">
         <label class="game__answer  game__answer--photo">
           <input class="visually-hidden" name="question1" type="radio" value="photo">
           <span>Фото</span>
@@ -521,23 +577,34 @@ ${new Array(10)
     ${new Array(10)
       .fill(`<li class="stats__result stats__result--unknown">`)
       .join(``)}
-    </ul>`);
+    </ul>
+    </section>`
+        }
 
-        const radioButton = game2ContentSection.querySelectorAll(`.game__answer>input`);
+        bind() {
+          const radioButton = this.element.querySelectorAll(`.game__answer>input`);
+          radioButton.forEach((element) => {
+            element.addEventListener(`click`, () => {
+                if (gamePlay.conditionСheck(START_GAME$1, stateGame.answers)) {
+                    if (element.checked) {
+                        gamePlay.pushAnswer(stateGame, 0, stateGame.answers, element);
+                    }
+                    this.showGame3();
+                    // data.gamePlay.showGameScreen(stateGame, data.START_GAME, game1, game2, game3);
+                } else {
+                    this.showStats();
+                }
+            });
+        });
+        }
 
-        const statResultCheck = () => {
-          debugger
-          console.log(stateGame$1.answers[gamePlay.getLevel(START_GAME, stateGame$1.answers) -1]);
-          console.log(stateGame$1.answers);
-          console.log(gamePlay.getLevel(START_GAME, stateGame$1.answers) - 1);
-          // console.log(stateGame.answers)
-          if (gamePlay.getLevel(START_GAME, stateGame$1.answers) - 1 === 0) {
+        statResultCheck() {
+          if (gamePlay.getLevel(START_GAME$1, stateGame.answers) - 1 === 0) {
             return
           } else {
-            stateGame$1.answers.forEach( (element, index) => {
-              const statsResult = game2ContentSection.querySelectorAll('.stats__result');
+            stateGame.answers.forEach( (element, index) => {
+              const statsResult = this.element.querySelectorAll('.stats__result');
              if (!element.isCorrectAnswer) {
-
 
               statsResult[index].classList.add(`stats__result--wrong`);
              } else {
@@ -545,153 +612,171 @@ ${new Array(10)
              }
             });
           }
-          // return
+          return
+        }
+
+        onButtonBackClick() {}
+        // statResultCheck()
+        showStats() {}
+        showGame3() {}
+    }
+
+    var game2 = () => {
+        const intro = new Intro$3();
+        intro.onButtonBackClick = () => {
+            showScreen(greeting().element);
         };
-        statResultCheck();
 
-        radioButton.forEach((element) => {
-            element.addEventListener(`click`, () => {
-                if (gamePlay.conditionСheck(START_GAME, stateGame$1.answers)) {
-                    if (element.checked) {
-                        gamePlay.pushAnswer(stateGame$1, 0, stateGame$1.answers, element);
-                    }
-                    gamePlay.showGameScreen(stateGame$1, START_GAME, game1, game2, game3);
-                } else {
-                    showScreen(head(), statsSection);
-                }
-            });
-        });
-
-        const buttonBack = head().querySelector(`.back`);
-        buttonBack.addEventListener(`click`, () => {
-            main.innerHTML = ``;
-            main.appendChild(moduleContent);
-        });
-        console.log(stateGame$1);
-        return game2ContentSection
+        intro.showGame3 = () => {
+            showScreen(game3().element);
+        };
+        intro.statResultCheck();
+            // отрисовываем статистику
+        intro.showStats = () => {
+            console.log(`показываю статистику`);
+        };
+        return intro;
     };
 
-    // import statsTemplate from '../stats-template';
+    class Intro$4 extends AbstractView {
+        constructor() { //разобраться и понять
+            super();
+        };
+        get template() {
+                return `
+${head()}
+<section class="game">
+  <p class="game__task">${gamePlay.getQuestionTemplate(stateGame)}</p>
+  <form class="game__content">
+    <div class="game__option">
+      <img src="${gamePlay.getImageTemplate(stateGame, 0)}" alt="Option 1" width="468" height="458">
+      <label class="game__answer game__answer--photo">
+        <input class="visually-hidden" name="question1" type="radio" value="photo">
+        <span>Фото</span>
+      </label>
+      <label class="game__answer game__answer--paint">
+        <input class="visually-hidden" name="question1" type="radio" value="paint">
+        <span>Рисунок</span>
+      </label>
+    </div>
+   <div class="game__option">
+      <img src="${gamePlay.getImageTemplate(stateGame, 1)}" alt="Option 2" width="468" height="458">
+      <label class="game__answer  game__answer--photo">
+        <input class="visually-hidden" name="question2" type="radio" value="photo">
+       <span>Фото</span>
+     </label>
+     <label class="game__answer  game__answer--paint">
+        <input class="visually-hidden" name="question2" type="radio" value="paint">
+       <span>Рисунок</span>
+     </label>
+    </div>
+  </form>
+  <ul class="stats">
+  ${new Array(10)
+        .fill(`<li class="stats__result stats__result--unknown">`)
+        .join(``)}
+  </ul>
+</section>`
+      }
+      ;
 
-    const game1 = () => {
-            debugger
-            // console.log(data.answers)
-            const gameContentSection = makeElement(`section`, `game`, `
-<p class="game__task">${gamePlay.getQuestionTemplate(stateGame$1)}</p>
-<form class="game__content">
-  <div class="game__option">
-    <img src="${gamePlay.getImageTemplate(stateGame$1, 0)}" alt="Option 1" width="468" height="458">
-    <label class="game__answer game__answer--photo">
-      <input class="visually-hidden" name="question1" type="radio" value="photo">
-      <span>Фото</span>
-    </label>
-    <label class="game__answer game__answer--paint">
-      <input class="visually-hidden" name="question1" type="radio" value="paint">
-      <span>Рисунок</span>
-    </label>
-  </div>
-  <div class="game__option">
-    <img src="${gamePlay.getImageTemplate(stateGame$1, 1)}" alt="Option 2" width="468" height="458">
-    <label class="game__answer  game__answer--photo">
-      <input class="visually-hidden" name="question2" type="radio" value="photo">
-      <span>Фото</span>
-    </label>
-    <label class="game__answer  game__answer--paint">
-      <input class="visually-hidden" name="question2" type="radio" value="paint">
-      <span>Рисунок</span>
-    </label>
-  </div>
-</form>
-<ul class="stats">
-${new Array(10)
-    .fill(`<li class="stats__result stats__result--unknown">`)
-    .join(``)}
-</ul>`);
-
-      let userAnswer = [];
-      const radioButtonLeftBox = gameContentSection.querySelectorAll(`input[name=question1]`);
-      const radioButtonRightBox = gameContentSection.querySelectorAll(`input[name=question2]`);
-      let isRadioButtonLeftBox = false;
-      let isRadioButtonRightBox = false;
-
-
-      const statResultCheck = () => {
-        // debugger
-        console.log(stateGame$1.answers[gamePlay.getLevel(START_GAME, stateGame$1.answers) -1]);
-        console.log(stateGame$1.answers);
-        console.log(gamePlay.getLevel(START_GAME, stateGame$1.answers) - 1);
-        // console.log(stateGame.answers)
-        if (gamePlay.getLevel(START_GAME, stateGame$1.answers) - 1 === 0) {
+      statResultCheck() {
+        if (gamePlay.getLevel(START_GAME$1, stateGame.answers) - 1 === 0) {
           return
         } else {
-          stateGame$1.answers.forEach( (element, index) => {
-            const statsResult = gameContentSection.querySelectorAll('.stats__result');
-           if (!element.isCorrectAnswer) {
-
-
-            statsResult[index].classList.add(`stats__result--wrong`);
-           } else {
-            statsResult[index].classList.add(`stats__result--correct`);
-           }
+          stateGame.answers.forEach((el, index) => {
+            const statsResult = this.element.querySelectorAll('.stats__result');
+            if (!el.isCorrectAnswer) {
+              statsResult[index].classList.add(`stats__result--wrong`);
+            } else {
+              statsResult[index].classList.add(`stats__result--correct`);
+            }
           });
         }
-        // return
-      };
-      statResultCheck();
+      }
+      ;
 
-      const compareChecked = () => {
+      bind() {
+        let userAnswer = [];
+        let isRadioButtonLeftBox = false;
+          let isRadioButtonRightBox = false;
+        const radioButtonLeftBox = this.element.querySelectorAll(`input[name=question1]`);
+        const radioButtonRightBox = this.element.querySelectorAll(`input[name=question2]`);
 
-        if (isRadioButtonLeftBox && isRadioButtonRightBox) {
-          if ((!userAnswer[0].isCorrectAnswer) || (!userAnswer[1].isCorrectAnswer)) {
-            stateGame$1.answers.push({
-              isCorrectAnswer: false,
-              time: 15
-            });
-          } else {
-            stateGame$1.answers.push({
-              isCorrectAnswer: true,
-              time: 15
-            });
+       const compareChecked = () => {
+          if (isRadioButtonLeftBox && isRadioButtonRightBox) {
+            if ((!userAnswer[0].isCorrectAnswer) || (!userAnswer[1].isCorrectAnswer)) {
+              stateGame.answers.push({
+                isCorrectAnswer: false,
+                time: 15
+              });
+            } else {
+              stateGame.answers.push({
+                isCorrectAnswer: true,
+                time: 15
+              });
+            }
+            if (gamePlay.conditionСheck(START_GAME$1, stateGame.answers)) {
+              this.compareChecking();
+            } else {
+              this.showStats();
+            }
           }
-          if (gamePlay.conditionСheck(START_GAME, stateGame$1.answers)) {
-            gamePlay.showGameScreen(stateGame$1, START_GAME, game1, game2, game3);
+        };
 
-          } else {
-            showScreen(head(), statsSection);
-          // отрисовываем статистику
-          }
-        }
-      };
 
-      const buttonBack = head().querySelector(`.back`);
-      buttonBack.addEventListener(`click`, () => {
-        main.innerHTML = ``;
-        main.appendChild(moduleContent);
-      });
+        radioButtonRightBox.forEach((element) => {
+          element.addEventListener(`click`, () => {
+            if (element.checked) {
+              isRadioButtonRightBox = true;
+            }
+            gamePlay.pushAnswer(stateGame, 1, userAnswer, element);
 
-      radioButtonRightBox.forEach((element) => {
-        element.addEventListener(`click`, () => {
-          if (element.checked) {
-            isRadioButtonRightBox = true;
-          }
-          gamePlay.pushAnswer(stateGame$1, 1, userAnswer, element);
-          compareChecked();
+            compareChecked();
+          });
         });
-      });
 
-      radioButtonLeftBox.forEach((element) => {
-        element.addEventListener(`click`, () => {
-          if (element.checked) {
-            isRadioButtonLeftBox = true;
-          }
-          gamePlay.pushAnswer(stateGame$1, 0, userAnswer, element);
-          compareChecked();
-          console.log(stateGame$1);
+        radioButtonLeftBox.forEach((element) => {
+          element.addEventListener(`click`, () => {
+            if (element.checked) {
+              isRadioButtonLeftBox = true;
+            }
+            gamePlay.pushAnswer(stateGame, 0, userAnswer, element);
+
+            compareChecked();
+          });
         });
-      });
-      return gameContentSection
+
+        const buttonBack = this.element.querySelector(`.back`);
+        buttonBack.addEventListener(`click`, () => {
+          this.onButtonBackClick();
+        });
+      }
+      // statResultCheck()
+      onButtonBackClick() {}
+      compareChecking() {}
+      showStats() {}
+
+    }
+
+    var game1 = () => {
+        const intro = new Intro$4();
+        intro.onButtonBackClick = () => {
+            showScreen(greeting().element);
+        };
+        intro.compareChecking = () => {
+            showScreen(game2().element);
+        };
+
+        intro.statResultCheck();
+            // отрисовываем статистику
+        intro.showStats = () => {
+            console.log(`показываю статистику`);
+        };
+        return intro;
     };
 
+    // data.showGameScreen(state, gameData, screen1, screen2, screen3)
 
     // так написал один из студентов академии!!!
 
@@ -771,8 +856,14 @@ ${new Array(10)
 
     // export default game1;
 
-    const rulesHeader = makeElement(`header`, `header`, `${ backBtnTemplate }`);
-    const rulesSection = makeElement(`section`, `rules`, `
+    class Intro$5 extends AbstractView {
+        constructor() { //разобраться и понять
+            super();
+        };
+
+        get template() {
+            return `<section class="rules">
+          ${ backBtnTemplate }
     <h2 class="rules__title">Правила</h2>
     <ul class="rules__description">
       <li>Угадай 10 раз для каждого изображения фото
@@ -786,63 +877,62 @@ ${new Array(10)
     <form class="rules__form">
       <input class="rules__input" type="text" placeholder="Ваше Имя">
       <button class="rules__button  continue" type="submit" disabled>Go!</button>
-    </form>`);
+    </form>
+    </section>`
+        }
 
-    const rulesButton = rulesSection.querySelector(`.rules__button`);
-    const inputName = rulesSection.querySelector(`.rules__input`);
 
 
-    rulesButton.addEventListener('click', () => {
-        showScreen(head(), game1());
-    });
+        bind() {
+            const rulesButton = this.element.querySelector(`.rules__button`);
+            const inputName = this.element.querySelector(`.rules__input`);
+            inputName.addEventListener(`input`, () => {
+                rulesButton.disabled = (inputName.value < 1);
+            });
+            rulesButton.addEventListener(`click`, (e) => {
+                e.preventDefault();
+                // console.log(`Слушатель на rules GO`)
+                this.onButtonClick();
+            });
+            const buttonBack = this.element.querySelector(`.back`);
+            buttonBack.addEventListener(`click`, (e) => {
+                e.preventDefault();
+                // console.log(`Слушатель на кнопку назад rules `)
+                this.onButtonBackClick();
+            });
+        }
+        onButtonClick() {};
+        onButtonBackClick() {};
+    }
 
-    const buttonBack$1 = rulesHeader.querySelector(`.back`);
-    buttonBack$1.addEventListener(`click`, () => {
-        main.innerHTML = ``;
-        main.appendChild(moduleContent);
-    });
+    var rules = () => {
+        const intro = new Intro$5();
+        intro.onButtonClick = () => showScreen(game1().element);
+        intro.onButtonBackClick = () => showScreen(greeting().element);
+        return intro;
+    };
 
-    inputName.addEventListener(`input`, () => {
-        rulesButton.disabled = (inputName.value < 1);
-    });
+    var greeting = () => {
+        const intro = new Intro$1();
+        intro.onButtonClick = () => showScreen(rules().element);
+        return intro;
+    };
 
-    const moduleContent = makeElement(`section`, `greeting central--blur`, `
-<img class="greeting__logo" src="img/logo_ph-big.svg" width="201" height="89" alt="Pixel Hunter">
-<div class="greeting__asterisk asterisk"><span class="visually-hidden">Я просто красивая звёздочка</span>*</div>
-<div class="greeting__challenge">
-  <h3 class="greeting__challenge-title">Лучшие художники-фотореалисты бросают тебе вызов!</h3>
-  <p class="greeting__challenge-text">Правила игры просты:</p>
-  <ul class="greeting__challenge-list">
-    <li>Нужно отличить рисунок от фотографии и сделать выбор.</li>
-    <li>Задача кажется тривиальной, но не думай, что все так просто.</li>
-    <li>Фотореализм обманчив и коварен.</li>
-    <li>Помни, главное — смотреть очень внимательно.</li>
-  </ul>
-</div>
-<button class="greeting__continue" type="button">
-  <span class="visually-hidden">Продолжить</span>
-  <svg class="icon" width="64" height="64" viewBox="0 0 64 64" fill="#000000">
-    <use xlink:href="img/sprite.svg#arrow-right"></use>
-  </svg>
-</button>`);
+    // showScreen(rules().element);
 
-    const greetingContinue = moduleContent.querySelector(`.greeting__continue`);
-    greetingContinue.addEventListener('click', () => {
-        showScreen(rulesHeader, rulesSection);
-    });
+    var intro = () => {
+            const intro = new Intro();
+            intro.onButtonClick = () => showScreen(greeting().element);
+            return intro;
+        };
+        // showScreen(greeteng().element);
 
-    const intro = makeElement('section', 'intro', `
-<button class="intro__asterisk asterisk" type="button"><span class="visually-hidden">Продолжить</span>*</button>
-<p class="intro__motto"><sup>*</sup> Это не фото. Это рисунок маслом нидерландского художника-фотореалиста Tjalf Sparnaay.</p>
-`, `intro`);
+    console.log(intro());
+    console.log(intro().template);
+    console.log(intro().element);
+    console.log(intro().render());
 
-    const asterisk = intro.querySelector(`.intro__asterisk`);
-    const introHeader = makeElement(`header`, `header`, ``);
-    const greetingHeader = makeElement(`header`, `header`, ``);
-
-    asterisk.addEventListener(`click`, () => showScreen(greetingHeader, moduleContent));
-
-    showScreen(introHeader, intro);
+    showScreen(intro().element);
 
 }());
 
