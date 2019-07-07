@@ -45,21 +45,21 @@ ${header()}
   }
   ;
 
-  statResultCheck() {
-    if (data.gamePlay.getLevel(data.START_GAME, stateGame.answers) - 1 === 0) {
-      return
-    } else {
-      stateGame.answers.forEach((el, index) => {
-        const statsResult = this.element.querySelectorAll('.stats__result');
-        if (!el.isCorrectAnswer) {
-          statsResult[index].classList.add(`stats__result--wrong`)
-        } else {
-          statsResult[index].classList.add(`stats__result--correct`)
-        }
-      })
-    }
-  }
-  ;
+  // statResultCheck() {
+  //   if (data.gamePlay.getLevel(data.START_GAME, stateGame.answers) - 1 === 0) {
+  //     return
+  //   } else {
+  //     stateGame.answers.forEach((el, index) => {
+  //       const statsResult = this.element.querySelectorAll('.stats__result');
+  //       if (!el.isCorrectAnswer) {
+  //         statsResult[index].classList.add(`stats__result--wrong`)
+  //       } else {
+  //         statsResult[index].classList.add(`stats__result--correct`)
+  //       }
+  //     })
+  //   }
+  // }
+  // ;
 
   bind() {
     let userAnswer = [];
@@ -116,8 +116,10 @@ ${header()}
     buttonBack.addEventListener(`click`, () => {
       this.onButtonBackClick();
     });
+
+    data.gamePlay.statResultCheck(this.element)
   }
-  // statResultCheck()
+  // data.gamePlay.statResultCheck(this.element)
   onButtonBackClick() {}
   compareChecking() {}
   showStats() {}

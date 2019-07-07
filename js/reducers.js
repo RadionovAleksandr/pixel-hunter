@@ -1,8 +1,5 @@
-// import gameScreens from './data-base';
-// import { game2 } from "../screens/game-2";
 import { showScreen } from './utils';
 import header from './header-template';
-// import state from './state'
 import stateGame from './data/state';
 
 
@@ -52,20 +49,6 @@ export const calculateAnswerTime = (clickTime) => {
 export let gamePlay = {
 
     getLives() {
-        // debugger
-        // let newGame = {};
-        // Object.assign(newGame, gameData);
-        // newGame.lives = gameData.lives;
-        // for (let i = 0; i < userAnswers.length; i++) {
-        //     console.log(userAnswers[i])
-        //     userAnswers[i].forEach((element) => {
-        //         if (!element.isCorrectAnswer) {
-        //             newGame.lives -= 1;
-        //         }
-        //     })
-        // }
-        // return newGame.lives
-
         let newGame = {};
         Object.assign(newGame, START_GAME);
         newGame.lives = START_GAME.lives;
@@ -74,19 +57,18 @@ export let gamePlay = {
                 newGame.lives -= 1;
             }
         })
-        console.log(newGame.lives)
         return newGame.lives
     },
 
     getLivesTemplate() {
         return new Array(this.getLives()) //количество потраченных жизней
-            .fill(`<img src="img/heart__full.svg" class="game__heart" alt=" Missed Life" width="31" height="27">`)
+            .fill(`<img src="img/heart__full.svg" class="game__heart" alt="Life" width="31" height="27">`)
             .join(``);
     },
 
     getLivesMissTemplate() {
-        new Array(3 - this.getLives()) //количество сохраненных жизней
-            .fill(`<img src="img/heart__empty.svg" class="game__heart" alt="Life" width="31" height="27">`)
+        return new Array(3 - this.getLives()) //количество сохраненных жизней
+            .fill(`<img src="img/heart__empty.svg" class="game__heart" alt="Missed Life" width="31" height="27">`)
             .join(``)
     },
 
@@ -94,7 +76,6 @@ export let gamePlay = {
         let newGame = {};
         Object.assign(newGame, gameData);
         let curentLevel
-        console.log(userAnswers.length)
         if (userAnswers.length === undefined) {
             curentLevel = 0
         } else {
@@ -114,10 +95,6 @@ export let gamePlay = {
         new Array(10)
             .fill(`< li class = "stats__result stats__result--unknown">`)
             .join(``);
-        // if (!state[this.getLevel(START_GAME, state) - 1].isCorrectAnswer) {
-        //     const statsResult = document.querySelectorAll('stats__result');
-        //     statsResult[this.getLevel(START_GAME, state) - 1].classList.add(`stats__result--wrong`)
-        // }
     },
 
     PropertyAnswertemplate() {
@@ -125,16 +102,6 @@ export let gamePlay = {
         if (!stateGame.answers[getLevel(START_GAME, stateGame.answers) - 1].isCorrectAnswer) {
             statsResult[getLevel(START_GAME, stateGame.answers) - 1]
         }
-        //     `< li class = "stats__result stats__result--wrong" > < /li> <
-        //         li class = "stats__result stats__result--slow" > < /li> <
-        //         li class = "stats__result stats__result--fast" > < /li> <
-        //         li class = "stats__result stats__result--correct" > < /li>
-        //         <li class = "stats__result stats__result--unknown" > < /li>
-        //         <li class = "stats__result stats__result--unknown" > < /li>
-        //         <li class = "stats__result stats__result--unknown" > < /li>
-        //         <li class = "stats__result stats__result--unknown" > < /li>
-        //         <li class = "stats__result stats__result--unknown" > < /li>
-        //         <li class = "stats__result stats__result--unknown" > < /li>`
     },
     getQuestionTemplate(state) {
         return state.screens[this.getLevel(START_GAME, state.answers) - 1].question
@@ -173,16 +140,16 @@ export let gamePlay = {
     },
 
     // открытие нужного слайда
-    showGameScreen(state, gameData, screen1, screen2, screen3) {
+    showGameScreen(screen1, screen2, screen3) {
         // debugger
-        if (state.screens[this.getLevel(gameData, state.answers) - 1].type === `two-foto`) {
-            return showScreen(header(), screen1());
+        if (stateGame.screens[this.getLevel(START_GAME, stateGame.answers) - 1].type === `two-foto`) {
+            return showScreen(screen1().element);
         }
-        if (state.screens[this.getLevel(gameData, state.answers) - 1].type === `one-foto`) {
-            return showScreen(header(), screen2());
+        if (stateGame.screens[this.getLevel(START_GAME, stateGame.answers) - 1].type === `one-foto`) {
+            return showScreen(screen2().element);
         }
-        if (state.screens[this.getLevel(gameData, state.answers) - 1].type === `three-foto`) {
-            return showScreen(header(), screen3());
+        if (stateGame.screens[this.getLevel(START_GAME, stateGame.answers) - 1].type === `three-foto`) {
+            return showScreen(screen3().element);
         }
     },
 
@@ -193,7 +160,6 @@ export let gamePlay = {
             stateGame.answers.forEach((element, index) => {
                 const statsResult = el.querySelectorAll('.stats__result');
                 if (!element.isCorrectAnswer) {
-
                     statsResult[index].classList.add(`stats__result--wrong`)
                 } else {
                     statsResult[index].classList.add(`stats__result--correct`)
@@ -202,14 +168,6 @@ export let gamePlay = {
         }
     }
 };
-// console.log(gamePlay.getLivesTemplate())
-
-// let stateGame
-// gamePlay.resetGame(stateGame, gameScreens);
-
-// console.log(stateGame)
-// gamePlay.resetGame();
-
 
 export const userNineAnswers = [{
         isCorrectAnswer: true,

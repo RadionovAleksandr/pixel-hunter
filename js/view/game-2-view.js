@@ -48,24 +48,26 @@ ${header()}
             }
         })
     });
+
+    data.gamePlay.statResultCheck(this.element)
     }
 
-    statResultCheck() {
-      if (data.gamePlay.getLevel(data.START_GAME, stateGame.answers) - 1 === 0) {
-        return
-      } else {
-        stateGame.answers.forEach( (element, index) => {
-          const statsResult = this.element.querySelectorAll('.stats__result');
-         if (!element.isCorrectAnswer) {
+    // statResultCheck() {
+    //   if (data.gamePlay.getLevel(data.START_GAME, stateGame.answers) - 1 === 0) {
+    //     return
+    //   } else {
+    //     stateGame.answers.forEach( (element, index) => {
+    //       const statsResult = this.element.querySelectorAll('.stats__result');
+    //      if (!element.isCorrectAnswer) {
 
-          statsResult[index].classList.add(`stats__result--wrong`)
-         } else {
-          statsResult[index].classList.add(`stats__result--correct`)
-         }
-        })
-      }
-      return
-    }
+    //       statsResult[index].classList.add(`stats__result--wrong`)
+    //      } else {
+    //       statsResult[index].classList.add(`stats__result--correct`)
+    //      }
+    //     })
+    //   }
+    //   return
+    // }
 
     onButtonBackClick() {}
     // statResultCheck()

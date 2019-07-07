@@ -37,6 +37,7 @@ ${new Array(10)
       element.addEventListener(`click`, () => {
         if (data.gamePlay.conditionСheck(data.START_GAME, stateGame.answers)) {
           data.gamePlay.pushAnswer(stateGame, index, stateGame.answers, element)
+
           this.showGame1();
           // data.gamePlay.showGameScreen(stateGame, data.START_GAME, game1, game2, game3);
         } else {
@@ -44,23 +45,24 @@ ${new Array(10)
         }
       })
     })
+    data.gamePlay.statResultCheck(this.element);
   }
 
-  statResultCheck() {
-    // console.log(stateGame.answers)
-    if (data.gamePlay.getLevel(data.START_GAME, stateGame.answers) - 1 === 0) {
-      return
-    } else {
-      stateGame.answers.forEach((element, index) => {
-        const statsResult = this.element.querySelectorAll('.stats__result');
-        if (!element.isCorrectAnswer) {
-          statsResult[index].classList.add(`stats__result--wrong`)
-        } else {
-          statsResult[index].classList.add(`stats__result--correct`)
-        }
-      })
-    }
-  }
+  // statResultCheck() {
+  //   // console.log(stateGame.answers)
+  //   if (data.gamePlay.getLevel(data.START_GAME, stateGame.answers) - 1 === 0) {
+  //     return
+  //   } else {
+  //     stateGame.answers.forEach((element, index) => {
+  //       const statsResult = this.element.querySelectorAll('.stats__result');
+  //       if (!element.isCorrectAnswer) {
+  //         statsResult[index].classList.add(`stats__result--wrong`)
+  //       } else {
+  //         statsResult[index].classList.add(`stats__result--correct`)
+  //       }
+  //     })
+  //   }
+  // }
 
   onButtonBackClick() {}
   showGame1() {}

@@ -4,6 +4,7 @@
     const main = document.querySelector(`#main`);
 
     const showScreen = (e) => {
+        // debugger
         console.log(e);
         main.innerHTML = ``;
         main.appendChild(e);
@@ -290,26 +291,6 @@
 
     let stateGame = resetGame(game, gameScreens);
 
-    // console.log(data.gamePlay.getLivesTemplate(data.START_GAME, stateGame.answers))
-    // console.log(new Array(data.gamePlay.getLives(data.START_GAME, stateGame.answers))
-    //     .fill(`<img src="img/heart__empty.svg" class="game__heart" alt=" Missed Life" width="31" height="27">`)
-    //     .join(``))
-    const head = () => {
-        const headerTemplate =
-            `<header class="header">
-    ${backBtnTemplate}
-  <div class="game__timer">NN</div>
-  <div class="game__lives">
-  ${gamePlay.getLivesTemplate()}
-  ${gamePlay.getLivesMissTemplate()}
-  </div>
-  </header>`;
-        return headerTemplate
-    };
-
-    // import gameScreens from './data-base';
-
-
     const START_GAME$1 = Object.freeze({
         points: 0,
         lives: 3,
@@ -319,20 +300,6 @@
     let gamePlay = {
 
         getLives() {
-            // debugger
-            // let newGame = {};
-            // Object.assign(newGame, gameData);
-            // newGame.lives = gameData.lives;
-            // for (let i = 0; i < userAnswers.length; i++) {
-            //     console.log(userAnswers[i])
-            //     userAnswers[i].forEach((element) => {
-            //         if (!element.isCorrectAnswer) {
-            //             newGame.lives -= 1;
-            //         }
-            //     })
-            // }
-            // return newGame.lives
-
             let newGame = {};
             Object.assign(newGame, START_GAME$1);
             newGame.lives = START_GAME$1.lives;
@@ -341,27 +308,25 @@
                     newGame.lives -= 1;
                 }
             });
-            console.log(newGame.lives);
             return newGame.lives
         },
 
         getLivesTemplate() {
             return new Array(this.getLives()) //количество потраченных жизней
-                .fill(`<img src="img/heart__full.svg" class="game__heart" alt=" Missed Life" width="31" height="27">`)
+                .fill(`<img src="img/heart__full.svg" class="game__heart" alt="Life" width="31" height="27">`)
                 .join(``);
         },
 
         getLivesMissTemplate() {
-            new Array(3 - this.getLives()) //количество сохраненных жизней
-                .fill(`<img src="img/heart__empty.svg" class="game__heart" alt="Life" width="31" height="27">`)
-                .join(``);
+            return new Array(3 - this.getLives()) //количество сохраненных жизней
+                .fill(`<img src="img/heart__empty.svg" class="game__heart" alt="Missed Life" width="31" height="27">`)
+                .join(``)
         },
 
         getLevel(gameData, userAnswers) {
             let newGame = {};
             Object.assign(newGame, gameData);
             let curentLevel;
-            console.log(userAnswers.length);
             if (userAnswers.length === undefined) {
                 curentLevel = 0;
             } else {
@@ -381,10 +346,6 @@
             new Array(10)
                 .fill(`< li class = "stats__result stats__result--unknown">`)
                 .join(``);
-            // if (!state[this.getLevel(START_GAME, state) - 1].isCorrectAnswer) {
-            //     const statsResult = document.querySelectorAll('stats__result');
-            //     statsResult[this.getLevel(START_GAME, state) - 1].classList.add(`stats__result--wrong`)
-            // }
         },
 
         PropertyAnswertemplate() {
@@ -392,16 +353,6 @@
             if (!stateGame.answers[getLevel(START_GAME$1, stateGame.answers) - 1].isCorrectAnswer) {
                 statsResult[getLevel(START_GAME$1, stateGame.answers) - 1];
             }
-            //     `< li class = "stats__result stats__result--wrong" > < /li> <
-            //         li class = "stats__result stats__result--slow" > < /li> <
-            //         li class = "stats__result stats__result--fast" > < /li> <
-            //         li class = "stats__result stats__result--correct" > < /li>
-            //         <li class = "stats__result stats__result--unknown" > < /li>
-            //         <li class = "stats__result stats__result--unknown" > < /li>
-            //         <li class = "stats__result stats__result--unknown" > < /li>
-            //         <li class = "stats__result stats__result--unknown" > < /li>
-            //         <li class = "stats__result stats__result--unknown" > < /li>
-            //         <li class = "stats__result stats__result--unknown" > < /li>`
         },
         getQuestionTemplate(state) {
             return state.screens[this.getLevel(START_GAME$1, state.answers) - 1].question
@@ -440,16 +391,16 @@
         },
 
         // открытие нужного слайда
-        showGameScreen(state, gameData, screen1, screen2, screen3) {
+        showGameScreen(screen1, screen2, screen3) {
             // debugger
-            if (state.screens[this.getLevel(gameData, state.answers) - 1].type === `two-foto`) {
-                return showScreen(head(), screen1());
+            if (stateGame.screens[this.getLevel(START_GAME$1, stateGame.answers) - 1].type === `two-foto`) {
+                return showScreen(screen1().element);
             }
-            if (state.screens[this.getLevel(gameData, state.answers) - 1].type === `one-foto`) {
-                return showScreen(head(), screen2());
+            if (stateGame.screens[this.getLevel(START_GAME$1, stateGame.answers) - 1].type === `one-foto`) {
+                return showScreen(screen2().element);
             }
-            if (state.screens[this.getLevel(gameData, state.answers) - 1].type === `three-foto`) {
-                return showScreen(head(), screen3());
+            if (stateGame.screens[this.getLevel(START_GAME$1, stateGame.answers) - 1].type === `three-foto`) {
+                return showScreen(screen3().element);
             }
         },
 
@@ -460,7 +411,6 @@
                 stateGame.answers.forEach((element, index) => {
                     const statsResult = el.querySelectorAll('.stats__result');
                     if (!element.isCorrectAnswer) {
-
                         statsResult[index].classList.add(`stats__result--wrong`);
                     } else {
                         statsResult[index].classList.add(`stats__result--correct`);
@@ -469,6 +419,140 @@
             }
         }
     };
+
+    console.log(gamePlay.getLivesTemplate());
+    console.log(gamePlay.getLivesMissTemplate());
+        //     .fill(`<img src="img/heart__empty.svg" class="game__heart" alt=" Missed Life" width="31" height="27">`)
+        //     .join(``))
+    const head = () => {
+        const headerTemplate =
+            `<header class="header">
+    ${backBtnTemplate}
+  <div class="game__timer">NN</div>
+  <div class="game__lives">
+  ${gamePlay.getLivesTemplate()}
+  ${gamePlay.getLivesMissTemplate()}
+  </div>
+  </header>`;
+        return headerTemplate
+    };
+
+    const statTemplate =
+        `${head()}
+    <h2 class="result__title">Победа!</h2>
+    <table class="result__table">
+      <tr>
+        <td class="result__number">1.</td>
+        <td colspan="2">
+          <ul class="stats">
+            <li class="stats__result stats__result--wrong"></li>
+            <li class="stats__result stats__result--slow"></li>
+            <li class="stats__result stats__result--fast"></li>
+            <li class="stats__result stats__result--correct"></li>
+            <li class="stats__result stats__result--wrong"></li>
+            <li class="stats__result stats__result--unknown"></li>
+            <li class="stats__result stats__result--slow"></li>
+            <li class="stats__result stats__result--unknown"></li>
+            <li class="stats__result stats__result--fast"></li>
+            <li class="stats__result stats__result--unknown"></li>
+          </ul>
+        </td>
+        <td class="result__points">× 100</td>
+        <td class="result__total">900</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="result__extra">Бонус за скорость:</td>
+        <td class="result__extra">1 <span class="stats__result stats__result--fast"></span></td>
+        <td class="result__points">× 50</td>
+        <td class="result__total">50</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="result__extra">Бонус за жизни:</td>
+        <td class="result__extra">2 <span class="stats__result stats__result--alive"></span></td>
+        <td class="result__points">× 50</td>
+        <td class="result__total">100</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="result__extra">Штраф за медлительность:</td>
+        <td class="result__extra">2 <span class="stats__result stats__result--slow"></span></td>
+        <td class="result__points">× 50</td>
+        <td class="result__total">-100</td>
+      </tr>
+      <tr>
+        <td colspan="5" class="result__total  result__total--final">950</td>
+      </tr>
+    </table>
+    <table class="result__table">
+      <tr>
+        <td class="result__number">2.</td>
+        <td>
+          <ul class="stats">
+            <li class="stats__result stats__result--wrong"></li>
+            <li class="stats__result stats__result--slow"></li>
+            <li class="stats__result stats__result--fast"></li>
+            <li class="stats__result stats__result--correct"></li>
+            <li class="stats__result stats__result--wrong"></li>
+            <li class="stats__result stats__result--unknown"></li>
+            <li class="stats__result stats__result--slow"></li>
+            <li class="stats__result stats__result--wrong"></li>
+            <li class="stats__result stats__result--fast"></li>
+            <li class="stats__result stats__result--wrong"></li>
+          </ul>
+        </td>
+        <td class="result__total"></td>
+        <td class="result__total  result__total--final">fail</td>
+      </tr>
+    </table>
+    <table class="result__table">
+      <tr>
+        <td class="result__number">3.</td>
+        <td colspan="2">
+          <ul class="stats">
+            <li class="stats__result stats__result--wrong"></li>
+            <li class="stats__result stats__result--slow"></li>
+            <li class="stats__result stats__result--fast"></li>
+            <li class="stats__result stats__result--correct"></li>
+            <li class="stats__result stats__result--wrong"></li>
+            <li class="stats__result stats__result--unknown"></li>
+            <li class="stats__result stats__result--slow"></li>
+            <li class="stats__result stats__result--unknown"></li>
+            <li class="stats__result stats__result--fast"></li>
+            <li class="stats__result stats__result--unknown"></li>
+          </ul>
+        </td>
+        <td class="result__points">× 100</td>
+        <td class="result__total">900</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="result__extra">Бонус за жизни:</td>
+        <td class="result__extra">2 <span class="stats__result stats__result--alive"></span></td>
+        <td class="result__points">× 50</td>
+        <td class="result__total">100</td>
+      </tr>
+      <tr>
+        <td colspan="5" class="result__total  result__total--final">950</td>
+      </tr>
+    </table>`;
+
+
+    const statsSection = () => {
+        const div = document.createElement(`div`);
+        div.innerHTML = statTemplate;
+        return div;
+    };
+
+    const buttonBack = statsSection().querySelector(`.back`);
+    console.log(buttonBack);
+
+
+    buttonBack.addEventListener(`click`, () => {
+        console.log(`клик по кнопке назад`);
+        showScreen(greeting().element);
+    });
 
     class Intro$2 extends AbstractView {
         constructor() { //разобраться и понять
@@ -504,6 +588,7 @@ ${new Array(10)
           element.addEventListener(`click`, () => {
             if (gamePlay.conditionСheck(START_GAME$1, stateGame.answers)) {
               gamePlay.pushAnswer(stateGame, index, stateGame.answers, element);
+
               this.showGame1();
               // data.gamePlay.showGameScreen(stateGame, data.START_GAME, game1, game2, game3);
             } else {
@@ -511,23 +596,24 @@ ${new Array(10)
             }
           });
         });
+        gamePlay.statResultCheck(this.element);
       }
 
-      statResultCheck() {
-        // console.log(stateGame.answers)
-        if (gamePlay.getLevel(START_GAME$1, stateGame.answers) - 1 === 0) {
-          return
-        } else {
-          stateGame.answers.forEach((element, index) => {
-            const statsResult = this.element.querySelectorAll('.stats__result');
-            if (!element.isCorrectAnswer) {
-              statsResult[index].classList.add(`stats__result--wrong`);
-            } else {
-              statsResult[index].classList.add(`stats__result--correct`);
-            }
-          });
-        }
-      }
+      // statResultCheck() {
+      //   // console.log(stateGame.answers)
+      //   if (data.gamePlay.getLevel(data.START_GAME, stateGame.answers) - 1 === 0) {
+      //     return
+      //   } else {
+      //     stateGame.answers.forEach((element, index) => {
+      //       const statsResult = this.element.querySelectorAll('.stats__result');
+      //       if (!element.isCorrectAnswer) {
+      //         statsResult[index].classList.add(`stats__result--wrong`)
+      //       } else {
+      //         statsResult[index].classList.add(`stats__result--correct`)
+      //       }
+      //     })
+      //   }
+      // }
 
       onButtonBackClick() {}
       showGame1() {}
@@ -540,13 +626,12 @@ ${new Array(10)
             showScreen(greeting().element);
         };
         intro.showGame1 = () => {
-            showScreen(game1().element);
+            gamePlay.showGameScreen(game1, game2, intro);
         };
 
-        intro.statResultCheck();
-            // отрисовываем статистику
+        // отрисовываем статистику
         intro.showStats = () => {
-            console.log(`показываю статистику`);
+            showScreen(statsSection());
         };
         return intro;
     };
@@ -596,24 +681,26 @@ ${head()}
                 }
             });
         });
+
+        gamePlay.statResultCheck(this.element);
         }
 
-        statResultCheck() {
-          if (gamePlay.getLevel(START_GAME$1, stateGame.answers) - 1 === 0) {
-            return
-          } else {
-            stateGame.answers.forEach( (element, index) => {
-              const statsResult = this.element.querySelectorAll('.stats__result');
-             if (!element.isCorrectAnswer) {
+        // statResultCheck() {
+        //   if (data.gamePlay.getLevel(data.START_GAME, stateGame.answers) - 1 === 0) {
+        //     return
+        //   } else {
+        //     stateGame.answers.forEach( (element, index) => {
+        //       const statsResult = this.element.querySelectorAll('.stats__result');
+        //      if (!element.isCorrectAnswer) {
 
-              statsResult[index].classList.add(`stats__result--wrong`);
-             } else {
-              statsResult[index].classList.add(`stats__result--correct`);
-             }
-            });
-          }
-          return
-        }
+        //       statsResult[index].classList.add(`stats__result--wrong`)
+        //      } else {
+        //       statsResult[index].classList.add(`stats__result--correct`)
+        //      }
+        //     })
+        //   }
+        //   return
+        // }
 
         onButtonBackClick() {}
         // statResultCheck()
@@ -626,14 +713,11 @@ ${head()}
         intro.onButtonBackClick = () => {
             showScreen(greeting().element);
         };
-
         intro.showGame3 = () => {
-            showScreen(game3().element);
+            gamePlay.showGameScreen(game1, intro, game3);
         };
-        intro.statResultCheck();
-            // отрисовываем статистику
         intro.showStats = () => {
-            console.log(`показываю статистику`);
+            showScreen(statsSection());
         };
         return intro;
     };
@@ -680,21 +764,21 @@ ${head()}
       }
       ;
 
-      statResultCheck() {
-        if (gamePlay.getLevel(START_GAME$1, stateGame.answers) - 1 === 0) {
-          return
-        } else {
-          stateGame.answers.forEach((el, index) => {
-            const statsResult = this.element.querySelectorAll('.stats__result');
-            if (!el.isCorrectAnswer) {
-              statsResult[index].classList.add(`stats__result--wrong`);
-            } else {
-              statsResult[index].classList.add(`stats__result--correct`);
-            }
-          });
-        }
-      }
-      ;
+      // statResultCheck() {
+      //   if (data.gamePlay.getLevel(data.START_GAME, stateGame.answers) - 1 === 0) {
+      //     return
+      //   } else {
+      //     stateGame.answers.forEach((el, index) => {
+      //       const statsResult = this.element.querySelectorAll('.stats__result');
+      //       if (!el.isCorrectAnswer) {
+      //         statsResult[index].classList.add(`stats__result--wrong`)
+      //       } else {
+      //         statsResult[index].classList.add(`stats__result--correct`)
+      //       }
+      //     })
+      //   }
+      // }
+      // ;
 
       bind() {
         let userAnswer = [];
@@ -751,8 +835,10 @@ ${head()}
         buttonBack.addEventListener(`click`, () => {
           this.onButtonBackClick();
         });
+
+        gamePlay.statResultCheck(this.element);
       }
-      // statResultCheck()
+      // data.gamePlay.statResultCheck(this.element)
       onButtonBackClick() {}
       compareChecking() {}
       showStats() {}
@@ -765,13 +851,12 @@ ${head()}
             showScreen(greeting().element);
         };
         intro.compareChecking = () => {
-            showScreen(game2().element);
+            gamePlay.showGameScreen(intro, game2, game3);
         };
 
-        intro.statResultCheck();
-            // отрисовываем статистику
+        // отрисовываем статистику
         intro.showStats = () => {
-            console.log(`показываю статистику`);
+            showScreen(statsSection());
         };
         return intro;
     };
@@ -927,10 +1012,10 @@ ${head()}
         };
         // showScreen(greeteng().element);
 
-    console.log(intro());
-    console.log(intro().template);
-    console.log(intro().element);
-    console.log(intro().render());
+    // console.log(intro())
+    // console.log(intro().template)
+    // console.log(intro().element)
+    // console.log(intro().render())
 
     showScreen(intro().element);
 

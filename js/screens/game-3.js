@@ -1,13 +1,11 @@
 ;
-// import header from '../header-template';
 import greeting from './greeting';
-// import stateGame from '../data/state';
-// import { statsSection } from "./stats";
+import stats from "./stats";
 import game2 from "./game-2";
 import game1 from "./game-1";
-import * as data from '../reducers';
 import Intro from '../view/game-3-view';
 import { showScreen } from '../utils';
+import * as data from '../reducers';
 
 export default () => {
     const intro = new Intro();
@@ -15,13 +13,12 @@ export default () => {
         showScreen(greeting().element)
     };
     intro.showGame1 = () => {
-        showScreen(game1().element)
+        data.gamePlay.showGameScreen(game1, game2, intro)
     };
 
-    intro.statResultCheck()
-        // отрисовываем статистику
+    // отрисовываем статистику
     intro.showStats = () => {
-        console.log(`показываю статистику`)
+        showScreen(stats())
     }
     return intro;
 }
