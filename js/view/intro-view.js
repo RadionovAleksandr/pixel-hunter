@@ -21,7 +21,7 @@ export default class Intro extends AbstractView {
             this.onButtonClick();
         });
     }
-    onButtonClick() {}; //разобраться и понять причину вызоваы
+    onButtonClick() {}; //разобраться и понять причину вызоваы,  это колбэк, запонится позже)
 }
 
 

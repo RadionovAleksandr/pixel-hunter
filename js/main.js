@@ -1,10 +1,3 @@
-import {
-    showScreen
-} from "./utils";
-import intro from "./screens/intro";
-// console.log(intro())
-// console.log(intro().template)
-// console.log(intro().element)
-// console.log(intro().render())
+import Router from "./router/application-router";
 
-showScreen(intro().element);
+Router.showIntro();

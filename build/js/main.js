@@ -5,46 +5,24 @@
 
     const showScreen = (e) => {
         // debugger
-        console.log(e);
+        // console.log(e)
         main.innerHTML = ``;
         main.appendChild(e);
     };
-
-    // const main = document.querySelector(`#main`);
-
-    // const makeElement = (tagName, className, template) => {
-    //     let domElement = document.createElement(tagName);
-    //     let classNames = className.split(' ');
-    //     classNames.forEach(function(classNamesItem) {
-    //         domElement.classList.add(classNamesItem)
-    //         domElement.innerHTML = template;
-    //     });
-    //     return domElement
-    // }
-
-    // const showScreen = (head, section) => {
-    //     main.innerHTML = ``;
-    //     main.appendChild(head);
-    //     main.appendChild(section);
-    // };
-
-    // export {
-    //     makeElement,
-    //     showScreen,
-    // };
 
     class AbstractView {
 
         get template() {}
         get element() {
-            // debugger
             if (this._element) {
+                // console.log(this._element)
                 return this._element;
             }
             this._element = this.render();
             this.bind(this._element);
             return this._element;
         }
+
         render() {
             const div = document.createElement(`div`);
             div.innerHTML = this.template.trim();
@@ -74,7 +52,7 @@
                 this.onButtonClick();
             });
         }
-        onButtonClick() {}; //разобраться и понять причину вызоваы
+        onButtonClick() {}; //разобраться и понять причину вызоваы,  это колбэк, запонится позже)
     }
 
 
@@ -108,6 +86,15 @@
     //   intro,
     //   introHeader
     // };
+
+    class IntroScreen {
+        get element() {
+            const intro = new Intro();
+            intro.onButtonClick = () => Router.showGreeting();
+
+            return intro.element;
+        }
+    }
 
     class Intro$1 extends AbstractView {
         constructor() { //разобраться и понять
@@ -148,6 +135,14 @@
         onButtonClick() {};
     }
 
+    class GreetingScreen {
+        get element() {
+            const greeting = new Intro$1();
+            greeting.onButtonClick = () => Router.showRules();
+            return greeting.element;
+        }
+    }
+
     const backBtnTemplate = `<button class="back">
 <span class="visually-hidden">Вернуться к началу</span>
 <svg class="icon" width="45" height="45" viewBox="0 0 45 45" fill="#000000">
@@ -158,790 +153,7 @@
 </svg>
 </button>`;
 
-    const gameScreens = [{
-            type: `two-foto`,
-            question: `Угадайте для каждого изображения фото или рисунок?`,
-            answers: [{
-                imageUrl: 'https://i.imgur.com/DiHM5Zb.jpg',
-                type: `paint`
-            }, {
-                imageUrl: `https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg`,
-                type: `photo`
-            }]
-        }, {
-            type: `one-foto`,
-            question: `Угадай, фото или рисунок?`,
-            answers: [{
-                imageUrl: 'https://theobriensabroad.com/wp-content/uploads/2017/11/27-4.jpg',
-                type: `photo`
-            }]
-        },
-        {
-            type: `three-foto`,
-            question: `Угадайте для каждого изображения фото или рисунок?`,
-            answers: [{
-                    imageUrl: 'http://mirfactov.com/wp-content/uploads/7718-620x410.jpg',
-                    type: `paint`
-                }, {
-                    imageUrl: 'https://habrastorage.org/getpro/habr/post_images/a78/291/807/a7829180746c99c987384e4b2b6df7b8.png',
-                    type: `photo`
-                },
-                {
-                    imageUrl: 'https://i.pinimg.com/564x/b9/50/49/b9504909abb1bafc993879f6736f8cd7.jpg',
-                    type: `photo`
-                }
-            ]
-        },
-        {
-            type: `two-foto`,
-            question: `Угадайте для каждого изображения фото или рисунок?`,
-            answers: [{
-                imageUrl: 'https://k42.kn3.net/CF42609C8.jpg',
-                type: `paint`
-            }, {
-                imageUrl: 'https://k42.kn3.net/D2F0370D6.jpg',
-                type: `paint`
-            }]
-        },
-        {
-            type: `one-foto`,
-            question: `Угадай, фото или рисунок?`,
-            answers: [{
-                imageUrl: 'https://st.depositphotos.com/3000005/4007/i/950/depositphotos_40075087-stock-photo-snow-covered-tree.jpg',
-                type: `photo`
-            }]
-        },
-        {
-            type: `three-foto`,
-            question: `Угадайте для каждого изображения фото или рисунок?`,
-            answers: [{
-                    imageUrl: 'https://raw.githubusercontent.com/sumanbogati/images/master/jstutorial/bandwidth-test.jpg',
-                    type: `photo`
-                }, {
-                    imageUrl: `https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/1859-Martinique.web.jpg/394px-1859-Martinique.web.jpg`,
-                    type: `photo`
-                },
-                {
-                    imageUrl: `http://i.imgur.com/DKR1HtB.jpg`,
-                    type: `paint`
-                }
-            ]
-        },
-        {
-            type: `two-foto`,
-            question: `Угадайте для каждого изображения фото или рисунок?`,
-            answers: [{
-                imageUrl: 'http://mirfactov.com/wp-content/uploads/21854-620x801.jpg',
-                type: `paint`
-            }, {
-                imageUrl: 'https://www.biletik.aero/upload/medialibrary/645/645fc33b514115ef5f8a59091fc3f155.JPG',
-                type: `photo`
-            }]
-        }, {
-            type: `one-foto`,
-            question: `Угадай, фото или рисунок?`,
-            answers: [{
-                imageUrl: 'http://i.imgur.com/1KegWPz.jpg',
-                type: `paint`
-            }]
-        },
-        {
-            type: `three-foto`,
-            question: `Угадайте для каждого изображения фото или рисунок?`,
-            answers: [{
-                    imageUrl: 'https://e0.edimdoma.ru/data/posts/0002/2597/22597-ed4_wide.jpg?1547628916',
-                    type: `photo`
-                }, {
-                    imageUrl: 'https://www.corkenglishcollege.ie/media/b255c98b-a128-461d-9171-b4c999f0c553/Events/FOTA-Wildlife-Park_jpg',
-                    type: `photo`
-                },
-                {
-                    imageUrl: `http://mirfactov.com/wp-content/uploads/8596-620x475.jpg`,
-                    type: `paint`
-                }
-            ]
-        },
-        {
-            type: `two-foto`,
-            question: `Угадайте для каждого изображения фото или рисунок?`,
-            answers: [{
-                imageUrl: 'https://k42.kn3.net/CF42609C8.jpg',
-                type: `paint`
-            }, {
-                imageUrl: 'https://cameralabs.org/media/k2/items/cache/3cb06e4cb464be7a87ae9907c7d62b4b_L.jpg',
-                type: `photo`
-            }]
-        }
-    ];
-
-    // import * as data from './game-data';
-
-    const START_GAME = Object.freeze({
-        points: 0,
-        lives: 3
-    });
-
-    let game;
-
-    const resetGame = (state, dataScreens) => {
-        state = Object.assign({}, START_GAME, { answers: [] });
-        state.screens = dataScreens;
-        return state
-    };
-
-    let stateGame = resetGame(game, gameScreens);
-
-    const START_GAME$1 = Object.freeze({
-        points: 0,
-        lives: 3,
-        level: 0
-    });
-
-    let gamePlay = {
-
-        getLives() {
-            let newGame = {};
-            Object.assign(newGame, START_GAME$1);
-            newGame.lives = START_GAME$1.lives;
-            stateGame.answers.forEach((element) => {
-                if (!element.isCorrectAnswer) {
-                    newGame.lives -= 1;
-                }
-            });
-            return newGame.lives
-        },
-
-        getLivesTemplate() {
-            return new Array(this.getLives()) //количество потраченных жизней
-                .fill(`<img src="img/heart__full.svg" class="game__heart" alt="Life" width="31" height="27">`)
-                .join(``);
-        },
-
-        getLivesMissTemplate() {
-            return new Array(3 - this.getLives()) //количество сохраненных жизней
-                .fill(`<img src="img/heart__empty.svg" class="game__heart" alt="Missed Life" width="31" height="27">`)
-                .join(``)
-        },
-
-        getLevel(gameData, userAnswers) {
-            let newGame = {};
-            Object.assign(newGame, gameData);
-            let curentLevel;
-            if (userAnswers.length === undefined) {
-                curentLevel = 0;
-            } else {
-                curentLevel = userAnswers.length;
-            }
-            newGame.level = curentLevel;
-            return newGame.level + 1
-        },
-
-        conditionСheck(gameData, userAnswers) {
-            if (this.getLevel(gameData, userAnswers) <= 10 && (this.getLives(gameData, userAnswers)) > 0) {
-                return true
-            }
-        },
-
-        getStatsTemplate(state) {
-            new Array(10)
-                .fill(`< li class = "stats__result stats__result--unknown">`)
-                .join(``);
-        },
-
-        PropertyAnswertemplate() {
-            const statsResult = document.querySelectorAll(`stats__result`);
-            if (!stateGame.answers[getLevel(START_GAME$1, stateGame.answers) - 1].isCorrectAnswer) {
-                statsResult[getLevel(START_GAME$1, stateGame.answers) - 1];
-            }
-        },
-        getQuestionTemplate(state) {
-            return state.screens[this.getLevel(START_GAME$1, state.answers) - 1].question
-        },
-
-        getImageTemplate(state, index) {
-            return state.screens[this.getLevel(START_GAME$1, state.answers) - 1].answers[index].imageUrl
-        },
-
-        pushAnswer(state, index, arrAnswer, element) {
-            if (state.screens[this.getLevel(START_GAME$1, state.answers) - 1].type === `three-foto`) {
-                if (`paint` === state.screens[this.getLevel(START_GAME$1, state.answers) - 1].answers[index].type) {
-                    arrAnswer.push({
-                        isCorrectAnswer: true,
-                        time: 15
-                    });
-                } else {
-                    arrAnswer.push({
-                        isCorrectAnswer: false,
-                        time: 15
-                    });
-                }
-            } else {
-                if (element.value === state.screens[this.getLevel(START_GAME$1, state.answers) - 1].answers[index].type) {
-                    arrAnswer.push({
-                        isCorrectAnswer: true,
-                        time: 15
-                    });
-                } else {
-                    arrAnswer.push({
-                        isCorrectAnswer: false,
-                        time: 15
-                    });
-                }
-            }
-        },
-
-        // открытие нужного слайда
-        showGameScreen(screen1, screen2, screen3) {
-            // debugger
-            if (stateGame.screens[this.getLevel(START_GAME$1, stateGame.answers) - 1].type === `two-foto`) {
-                return showScreen(screen1().element);
-            }
-            if (stateGame.screens[this.getLevel(START_GAME$1, stateGame.answers) - 1].type === `one-foto`) {
-                return showScreen(screen2().element);
-            }
-            if (stateGame.screens[this.getLevel(START_GAME$1, stateGame.answers) - 1].type === `three-foto`) {
-                return showScreen(screen3().element);
-            }
-        },
-
-        statResultCheck(el) {
-            if (this.getLevel(START_GAME$1, stateGame.answers) - 1 === 0) {
-                return
-            } else {
-                stateGame.answers.forEach((element, index) => {
-                    const statsResult = el.querySelectorAll('.stats__result');
-                    if (!element.isCorrectAnswer) {
-                        statsResult[index].classList.add(`stats__result--wrong`);
-                    } else {
-                        statsResult[index].classList.add(`stats__result--correct`);
-                    }
-                });
-            }
-        }
-    };
-
-    console.log(gamePlay.getLivesTemplate());
-    console.log(gamePlay.getLivesMissTemplate());
-        //     .fill(`<img src="img/heart__empty.svg" class="game__heart" alt=" Missed Life" width="31" height="27">`)
-        //     .join(``))
-    const head = () => {
-        const headerTemplate =
-            `<header class="header">
-    ${backBtnTemplate}
-  <div class="game__timer">NN</div>
-  <div class="game__lives">
-  ${gamePlay.getLivesTemplate()}
-  ${gamePlay.getLivesMissTemplate()}
-  </div>
-  </header>`;
-        return headerTemplate
-    };
-
-    const statTemplate =
-        `${head()}
-    <h2 class="result__title">Победа!</h2>
-    <table class="result__table">
-      <tr>
-        <td class="result__number">1.</td>
-        <td colspan="2">
-          <ul class="stats">
-            <li class="stats__result stats__result--wrong"></li>
-            <li class="stats__result stats__result--slow"></li>
-            <li class="stats__result stats__result--fast"></li>
-            <li class="stats__result stats__result--correct"></li>
-            <li class="stats__result stats__result--wrong"></li>
-            <li class="stats__result stats__result--unknown"></li>
-            <li class="stats__result stats__result--slow"></li>
-            <li class="stats__result stats__result--unknown"></li>
-            <li class="stats__result stats__result--fast"></li>
-            <li class="stats__result stats__result--unknown"></li>
-          </ul>
-        </td>
-        <td class="result__points">× 100</td>
-        <td class="result__total">900</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td class="result__extra">Бонус за скорость:</td>
-        <td class="result__extra">1 <span class="stats__result stats__result--fast"></span></td>
-        <td class="result__points">× 50</td>
-        <td class="result__total">50</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td class="result__extra">Бонус за жизни:</td>
-        <td class="result__extra">2 <span class="stats__result stats__result--alive"></span></td>
-        <td class="result__points">× 50</td>
-        <td class="result__total">100</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td class="result__extra">Штраф за медлительность:</td>
-        <td class="result__extra">2 <span class="stats__result stats__result--slow"></span></td>
-        <td class="result__points">× 50</td>
-        <td class="result__total">-100</td>
-      </tr>
-      <tr>
-        <td colspan="5" class="result__total  result__total--final">950</td>
-      </tr>
-    </table>
-    <table class="result__table">
-      <tr>
-        <td class="result__number">2.</td>
-        <td>
-          <ul class="stats">
-            <li class="stats__result stats__result--wrong"></li>
-            <li class="stats__result stats__result--slow"></li>
-            <li class="stats__result stats__result--fast"></li>
-            <li class="stats__result stats__result--correct"></li>
-            <li class="stats__result stats__result--wrong"></li>
-            <li class="stats__result stats__result--unknown"></li>
-            <li class="stats__result stats__result--slow"></li>
-            <li class="stats__result stats__result--wrong"></li>
-            <li class="stats__result stats__result--fast"></li>
-            <li class="stats__result stats__result--wrong"></li>
-          </ul>
-        </td>
-        <td class="result__total"></td>
-        <td class="result__total  result__total--final">fail</td>
-      </tr>
-    </table>
-    <table class="result__table">
-      <tr>
-        <td class="result__number">3.</td>
-        <td colspan="2">
-          <ul class="stats">
-            <li class="stats__result stats__result--wrong"></li>
-            <li class="stats__result stats__result--slow"></li>
-            <li class="stats__result stats__result--fast"></li>
-            <li class="stats__result stats__result--correct"></li>
-            <li class="stats__result stats__result--wrong"></li>
-            <li class="stats__result stats__result--unknown"></li>
-            <li class="stats__result stats__result--slow"></li>
-            <li class="stats__result stats__result--unknown"></li>
-            <li class="stats__result stats__result--fast"></li>
-            <li class="stats__result stats__result--unknown"></li>
-          </ul>
-        </td>
-        <td class="result__points">× 100</td>
-        <td class="result__total">900</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td class="result__extra">Бонус за жизни:</td>
-        <td class="result__extra">2 <span class="stats__result stats__result--alive"></span></td>
-        <td class="result__points">× 50</td>
-        <td class="result__total">100</td>
-      </tr>
-      <tr>
-        <td colspan="5" class="result__total  result__total--final">950</td>
-      </tr>
-    </table>`;
-
-
-    const statsSection = () => {
-        const div = document.createElement(`div`);
-        div.innerHTML = statTemplate;
-        return div;
-    };
-
-    const buttonBack = statsSection().querySelector(`.back`);
-    console.log(buttonBack);
-
-
-    buttonBack.addEventListener(`click`, () => {
-        console.log(`клик по кнопке назад`);
-        showScreen(greeting().element);
-    });
-
-    class Intro$2 extends AbstractView {
-        constructor() { //разобраться и понять
-            super();
-        };
-        get template() {
-                return `
-${head()}
-<section class="game">
-<p class="game__task">${gamePlay.getQuestionTemplate(stateGame)}</p>
-<form class="game__content  game__content--triple">
-<div class="game__option">
-  <img src="${gamePlay.getImageTemplate(stateGame, 0)}" alt="Option 1" width="304" height="455">
-</div>
-<div class="game__option  game__option--selected">
-  <img src="${gamePlay.getImageTemplate(stateGame, 1)}" alt="Option 2" width="304" height="455">
-</div>
-<div class="game__option">
-  <img src="${gamePlay.getImageTemplate(stateGame, 2)}" alt="Option 3" width="304" height="455">
-</div>
-</form>
-<ul class="stats">
-${new Array(10)
-        .fill(`<li class="stats__result stats__result--unknown">`)
-        .join(``)}
-</ul>
-</section>`
-      }
-
-      bind() {
-        const button = this.element.querySelectorAll('.game__option');
-        button.forEach((element, index) => {
-          element.addEventListener(`click`, () => {
-            if (gamePlay.conditionСheck(START_GAME$1, stateGame.answers)) {
-              gamePlay.pushAnswer(stateGame, index, stateGame.answers, element);
-
-              this.showGame1();
-              // data.gamePlay.showGameScreen(stateGame, data.START_GAME, game1, game2, game3);
-            } else {
-              this.showStats();
-            }
-          });
-        });
-        gamePlay.statResultCheck(this.element);
-      }
-
-      // statResultCheck() {
-      //   // console.log(stateGame.answers)
-      //   if (data.gamePlay.getLevel(data.START_GAME, stateGame.answers) - 1 === 0) {
-      //     return
-      //   } else {
-      //     stateGame.answers.forEach((element, index) => {
-      //       const statsResult = this.element.querySelectorAll('.stats__result');
-      //       if (!element.isCorrectAnswer) {
-      //         statsResult[index].classList.add(`stats__result--wrong`)
-      //       } else {
-      //         statsResult[index].classList.add(`stats__result--correct`)
-      //       }
-      //     })
-      //   }
-      // }
-
-      onButtonBackClick() {}
-      showGame1() {}
-      showStats() {}
-    }
-
-    var game3 = () => {
-        const intro = new Intro$2();
-        intro.onButtonBackClick = () => {
-            showScreen(greeting().element);
-        };
-        intro.showGame1 = () => {
-            gamePlay.showGameScreen(game1, game2, intro);
-        };
-
-        // отрисовываем статистику
-        intro.showStats = () => {
-            showScreen(statsSection());
-        };
-        return intro;
-    };
-
-    class Intro$3 extends AbstractView {
-        constructor() { //разобраться и понять
-            super();
-        };
-        get template() {
-                return `
-${head()}
-        <section class="game"
-<p class="game__task">${gamePlay.getQuestionTemplate(stateGame)}</p>
-    <form class="game__content  game__content--wide">
-      <div class="game__option">
-        <img src="${gamePlay.getImageTemplate(stateGame, 0)}" alt="Option 1" width="705" height="455">
-        <label class="game__answer  game__answer--photo">
-          <input class="visually-hidden" name="question1" type="radio" value="photo">
-          <span>Фото</span>
-        </label>
-        <label class="game__answer  game__answer--paint">
-          <input class="visually-hidden" name="question1" type="radio" value="paint">
-          <span>Рисунок</span>
-        </label>
-      </div>
-    </form>
-    <ul class="stats">
-    ${new Array(10)
-      .fill(`<li class="stats__result stats__result--unknown">`)
-      .join(``)}
-    </ul>
-    </section>`
-        }
-
-        bind() {
-          const radioButton = this.element.querySelectorAll(`.game__answer>input`);
-          radioButton.forEach((element) => {
-            element.addEventListener(`click`, () => {
-                if (gamePlay.conditionСheck(START_GAME$1, stateGame.answers)) {
-                    if (element.checked) {
-                        gamePlay.pushAnswer(stateGame, 0, stateGame.answers, element);
-                    }
-                    this.showGame3();
-                    // data.gamePlay.showGameScreen(stateGame, data.START_GAME, game1, game2, game3);
-                } else {
-                    this.showStats();
-                }
-            });
-        });
-
-        gamePlay.statResultCheck(this.element);
-        }
-
-        // statResultCheck() {
-        //   if (data.gamePlay.getLevel(data.START_GAME, stateGame.answers) - 1 === 0) {
-        //     return
-        //   } else {
-        //     stateGame.answers.forEach( (element, index) => {
-        //       const statsResult = this.element.querySelectorAll('.stats__result');
-        //      if (!element.isCorrectAnswer) {
-
-        //       statsResult[index].classList.add(`stats__result--wrong`)
-        //      } else {
-        //       statsResult[index].classList.add(`stats__result--correct`)
-        //      }
-        //     })
-        //   }
-        //   return
-        // }
-
-        onButtonBackClick() {}
-        // statResultCheck()
-        showStats() {}
-        showGame3() {}
-    }
-
-    var game2 = () => {
-        const intro = new Intro$3();
-        intro.onButtonBackClick = () => {
-            showScreen(greeting().element);
-        };
-        intro.showGame3 = () => {
-            gamePlay.showGameScreen(game1, intro, game3);
-        };
-        intro.showStats = () => {
-            showScreen(statsSection());
-        };
-        return intro;
-    };
-
-    class Intro$4 extends AbstractView {
-        constructor() { //разобраться и понять
-            super();
-        };
-        get template() {
-                return `
-${head()}
-<section class="game">
-  <p class="game__task">${gamePlay.getQuestionTemplate(stateGame)}</p>
-  <form class="game__content">
-    <div class="game__option">
-      <img src="${gamePlay.getImageTemplate(stateGame, 0)}" alt="Option 1" width="468" height="458">
-      <label class="game__answer game__answer--photo">
-        <input class="visually-hidden" name="question1" type="radio" value="photo">
-        <span>Фото</span>
-      </label>
-      <label class="game__answer game__answer--paint">
-        <input class="visually-hidden" name="question1" type="radio" value="paint">
-        <span>Рисунок</span>
-      </label>
-    </div>
-   <div class="game__option">
-      <img src="${gamePlay.getImageTemplate(stateGame, 1)}" alt="Option 2" width="468" height="458">
-      <label class="game__answer  game__answer--photo">
-        <input class="visually-hidden" name="question2" type="radio" value="photo">
-       <span>Фото</span>
-     </label>
-     <label class="game__answer  game__answer--paint">
-        <input class="visually-hidden" name="question2" type="radio" value="paint">
-       <span>Рисунок</span>
-     </label>
-    </div>
-  </form>
-  <ul class="stats">
-  ${new Array(10)
-        .fill(`<li class="stats__result stats__result--unknown">`)
-        .join(``)}
-  </ul>
-</section>`
-      }
-      ;
-
-      // statResultCheck() {
-      //   if (data.gamePlay.getLevel(data.START_GAME, stateGame.answers) - 1 === 0) {
-      //     return
-      //   } else {
-      //     stateGame.answers.forEach((el, index) => {
-      //       const statsResult = this.element.querySelectorAll('.stats__result');
-      //       if (!el.isCorrectAnswer) {
-      //         statsResult[index].classList.add(`stats__result--wrong`)
-      //       } else {
-      //         statsResult[index].classList.add(`stats__result--correct`)
-      //       }
-      //     })
-      //   }
-      // }
-      // ;
-
-      bind() {
-        let userAnswer = [];
-        let isRadioButtonLeftBox = false;
-          let isRadioButtonRightBox = false;
-        const radioButtonLeftBox = this.element.querySelectorAll(`input[name=question1]`);
-        const radioButtonRightBox = this.element.querySelectorAll(`input[name=question2]`);
-
-       const compareChecked = () => {
-          if (isRadioButtonLeftBox && isRadioButtonRightBox) {
-            if ((!userAnswer[0].isCorrectAnswer) || (!userAnswer[1].isCorrectAnswer)) {
-              stateGame.answers.push({
-                isCorrectAnswer: false,
-                time: 15
-              });
-            } else {
-              stateGame.answers.push({
-                isCorrectAnswer: true,
-                time: 15
-              });
-            }
-            if (gamePlay.conditionСheck(START_GAME$1, stateGame.answers)) {
-              this.compareChecking();
-            } else {
-              this.showStats();
-            }
-          }
-        };
-
-
-        radioButtonRightBox.forEach((element) => {
-          element.addEventListener(`click`, () => {
-            if (element.checked) {
-              isRadioButtonRightBox = true;
-            }
-            gamePlay.pushAnswer(stateGame, 1, userAnswer, element);
-
-            compareChecked();
-          });
-        });
-
-        radioButtonLeftBox.forEach((element) => {
-          element.addEventListener(`click`, () => {
-            if (element.checked) {
-              isRadioButtonLeftBox = true;
-            }
-            gamePlay.pushAnswer(stateGame, 0, userAnswer, element);
-
-            compareChecked();
-          });
-        });
-
-        const buttonBack = this.element.querySelector(`.back`);
-        buttonBack.addEventListener(`click`, () => {
-          this.onButtonBackClick();
-        });
-
-        gamePlay.statResultCheck(this.element);
-      }
-      // data.gamePlay.statResultCheck(this.element)
-      onButtonBackClick() {}
-      compareChecking() {}
-      showStats() {}
-
-    }
-
-    var game1 = () => {
-        const intro = new Intro$4();
-        intro.onButtonBackClick = () => {
-            showScreen(greeting().element);
-        };
-        intro.compareChecking = () => {
-            gamePlay.showGameScreen(intro, game2, game3);
-        };
-
-        // отрисовываем статистику
-        intro.showStats = () => {
-            showScreen(statsSection());
-        };
-        return intro;
-    };
-
-    // data.showGameScreen(state, gameData, screen1, screen2, screen3)
-
-    // так написал один из студентов академии!!!
-
-    // const game1 = (data) => {
-    //     const gameTask = `<p class="game__task">${data.gameScreens[data.level].question}</p>`;
-    //     const game1Html = `
-    //     ${headerTemplate(data)}
-    //     <section class="game">
-    //     ${gameTask}
-    //       <form class="game__content">
-    //         <div class="game__option">
-    //           <img src="${data.gameScreens[data.level].answers[0].image.url}" alt="Option 1" width="468" height="458">
-    //           <label class="game__answer game__answer--photo">
-    //             <input class="visually-hidden" name="question1" type="radio" value="photo">
-    //             <span>Фото</span>
-    //           </label>
-    //           <label class="game__answer game__answer--paint">
-    //             <input class="visually-hidden" name="question1" type="radio" value="paint">
-    //             <span>Рисунок</span>
-    //           </label>
-    //         </div>
-    //         <div class="game__option">
-    //           <img src="${data.gameScreens[data.level].answers[1].image.url}" alt="Option 2" width="468" height="458">
-    //           <label class="game__answer  game__answer--photo">
-    //             <input class="visually-hidden" name="question2" type="radio" value="photo">
-    //             <span>Фото</span>
-    //           </label>
-    //           <label class="game__answer  game__answer--paint">
-    //             <input class="visually-hidden" name="question2" type="radio" value="paint">
-    //             <span>Рисунок</span>
-    //           </label>
-    //         </div>
-    //       </form>
-    //     </section>`;
-
-    //     const game1El = makeElement(game1Html);
-    //     const leftRadioGroup = [...game1El.querySelectorAll(`input[name=question1]`)];
-    //     const rightRadioGroup = [...game1El.querySelectorAll(`input[name=question2]`)];
-    //     const backBtn = game1El.querySelector(`.back`);
-    //     const gameSection = game1El.querySelector(`.game`);
-    //     let isLeftPictureSelected = false;
-    //     let isRightPictureSelected = false;
-
-    //     gameSection.appendChild(statsTemplate(data));
-
-    //     const compareChecked = () => {
-    //         if (isLeftPictureSelected && isRightPictureSelected) {
-    //             gameState.addAnswer(true, 1500);
-    //             gameState.checkLivesCount(data);
-    //             gameState.changeGameLevel();
-    //             gameState.checkGameOver(data);
-    //         }
-    //     };
-
-    //     leftRadioGroup.map((el) => {
-    //         el.addEventListener(`click`, () => {
-    //             if (el.checked) {
-    //                 isLeftPictureSelected = true;
-    //             }
-    //             compareChecked();
-    //         });
-    //     });
-
-    //     rightRadioGroup.forEach((el) => {
-    //         el.addEventListener(`click`, () => {
-    //             if (el.checked) {
-    //                 isRightPictureSelected = true;
-    //             }
-    //             compareChecked();
-    //         });
-    //     });
-
-    //     backBtn.addEventListener(`click`, () => showScreen(greeting()));
-
-    //     return game1El;
-    // };
-
-    // export default game1;
-
-    class Intro$5 extends AbstractView {
+    class Rules extends AbstractView {
         constructor() { //разобраться и понять
             super();
         };
@@ -990,34 +202,968 @@ ${head()}
         onButtonBackClick() {};
     }
 
-    var rules = () => {
-        const intro = new Intro$5();
-        intro.onButtonClick = () => showScreen(game1().element);
-        intro.onButtonBackClick = () => showScreen(greeting().element);
-        return intro;
-    };
-
-    var greeting = () => {
-        const intro = new Intro$1();
-        intro.onButtonClick = () => showScreen(rules().element);
-        return intro;
-    };
-
-    // showScreen(rules().element);
-
-    var intro = () => {
-            const intro = new Intro();
-            intro.onButtonClick = () => showScreen(greeting().element);
-            return intro;
+    class RulesScreen {
+        get element() {
+            const rules = new Rules();
+            rules.onButtonClick = () => Router.showGame();
+            rules.onButtonBackClick = () => Router.showGreeting();
+            return rules.element;
         };
-        // showScreen(greeteng().element);
+    }
 
-    // console.log(intro())
-    // console.log(intro().template)
-    // console.log(intro().element)
-    // console.log(intro().render())
+    const QUICK_ANSWER = 10000;
+    const SLOW_ANSWER = 20000;
 
-    showScreen(intro().element);
+    const INITIAL_STATE = Object.freeze({
+        level: 0,
+        lives: 3,
+        time: 10,
+        questions: 10,
+        savedGamesCount: 3,
+        answers: [],
+        playedGames: []
+    });
+
+    const Answer = {
+        RIGHT: 100,
+        QUICK: 50,
+        SLOW: 50,
+        BONUS_FOR_LIVES: 50,
+    };
+
+    const ONE_SECOND = 1000;
+
+    const gameData = (state) => {
+        const lives = state.lives;
+        const answers = state.answers;
+
+        let acc = 0;
+        let scores = 0;
+        const livesBonus = Answer.BONUS_FOR_LIVES * lives;
+
+        if (livesBonus) {
+            scores += livesBonus;
+        }
+
+
+        // для каждого элемента answers записываем в массив елемента записываем answer и time
+        answers.forEach((el) => {
+            const [answer, time] = el;
+
+            if (answer) {
+                acc += 1;
+                scores += Answer.RIGHT;
+            }
+            if (answer && (time < QUICK_ANSWER)) {
+                scores += Answer.QUICK;
+            }
+            if (answer && (time > SLOW_ANSWER)) {
+                scores -= Answer.SLOW;
+            }
+        });
+        if (acc < INITIAL_STATE.questions - INITIAL_STATE.lives) {
+            console.log(` Проиграл `);
+            return -1;
+        }
+        return scores;
+    };
+
+    const GAME_SCREENS = [{
+      type: `two-of-two`,
+      question: `Угадайте для каждого изображения фото или рисунок?`,
+      answers: [{
+        image: {
+          url: `http://i.imgur.com/DKR1HtB.jpg`
+        },
+        type: `photo`
+      },
+      {
+        image: {
+          url: `https://k42.kn3.net/CF42609C8.jpg`
+        },
+        type: `photo`
+      }
+      ]
+    }, {
+      type: `tinder-like`,
+      question: `Угадай, фото или рисунок?`,
+      answers: [{
+        image: {
+          url: `https://k42.kn3.net/CF42609C8.jpg`
+        },
+        type: `painting`
+      }]
+    }, {
+      type: `tinder-like`,
+      question: `Угадай, фото или рисунок?`,
+      answers: [{
+        image: {
+          url: `http://i.imgur.com/1KegWPz.jpg`
+        },
+        type: `photo`
+      }]
+    }, {
+      type: `one-of-three`,
+      question: `Найдите рисунок среди изображений`,
+      answers: [{
+        image: {
+          url: `https://i.imgur.com/DiHM5Zb.jpg`
+        },
+        type: `painting`
+      },
+      {
+        image: {
+          url: `http://i.imgur.com/DKR1HtB.jpg`
+        },
+        type: `painting`
+      },
+      {
+        image: {
+          url: `https://k42.kn3.net/CF42609C8.jpg`
+        },
+        type: `painting`
+      }
+      ]
+    }, {
+      type: `tinder-like`,
+      question: `Угадай, фото или рисунок?`,
+      answers: [{
+        image: {
+          url: `https://k42.kn3.net/CF42609C8.jpg`
+        },
+        type: `painting`
+      }]
+    }, {
+      type: `one-of-three`,
+      question: `Найдите рисунок среди изображений`,
+      answers: [{
+        image: {
+          url: `https://k42.kn3.net/CF42609C8.jpg`
+        },
+        type: `painting`
+      },
+      {
+        image: {
+          url: `https://k42.kn3.net/D2F0370D6.jpg`
+        },
+        type: `painting`
+      },
+      {
+        image: {
+          url: `https://k42.kn3.net/CF42609C8.jpg`
+        },
+        type: `painting`
+      }
+      ]
+    }, {
+      type: `two-of-two`,
+      question: `Угадайте для каждого изображения фото или рисунок?`,
+      answers: [{
+        image: {
+          url: `http://i.imgur.com/DKR1HtB.jpg`
+        },
+        type: `photo`
+      },
+      {
+        image: {
+          url: `https://k42.kn3.net/CF42609C8.jpg`
+        },
+        type: `photo`
+      }
+      ]
+    }, {
+      type: `tinder-like`,
+      question: `Угадай, фото или рисунок?`,
+      answers: [{
+        image: {
+          url: `https://k42.kn3.net/CF42609C8.jpg`
+        },
+        type: `painting`
+      }]
+    }, {
+      type: `two-of-two`,
+      question: `Угадайте для каждого изображения фото или рисунок?`,
+      answers: [{
+        image: {
+          url: `https://i.imgur.com/DiHM5Zb.jpg`
+        },
+        type: `photo`
+      },
+      {
+        image: {
+          url: `https://k42.kn3.net/CF42609C8.jpg`
+        },
+        type: `photo`
+      }
+      ]
+    }, {
+      type: `tinder-like`,
+      question: `Угадай, фото или рисунок?`,
+      answers: [{
+        image: {
+          url: `http://i.imgur.com/1KegWPz.jpg`
+        },
+        type: `painting`
+      }]
+    }];
+
+    const checkLives = (data) => {
+      let lives = INITIAL_STATE.lives;
+      const arr = data.answers;
+
+      arr.forEach((el) => {
+        if (!el[0] && lives >= 0) {
+          lives -= 1;
+        }
+      });
+
+      return lives;
+    };
+
+    class GameModel {
+        constructor() {
+            this.gamePlay = null; //разобраться и понять
+        }
+
+        get getState() {
+            return this.gamePlay;
+        }
+
+        resetGame() {
+            this.gamePlay = Object.assign({}, INITIAL_STATE, {
+                answers: []
+            });
+            this.gamePlay.gameScreens = GAME_SCREENS;
+        }
+
+        changeGameLevel() {
+            this.gamePlay.level += 1;
+            alert(`level +1 ` + this.gamePlay.level);
+        }
+
+        addAnswer(result, time) {
+            this.gamePlay.answers.push([result, time]);
+        }
+        checkLivesCount(state) {
+            this.gamePlay.lives = checkLives(state);
+        }
+
+        //повторяющийся элемент выпилить
+        quickAnswersCount(state) {
+                return state.answers.reduce((acc, el) => {
+                    // alert(`запускаю reduce для answers ` + state.answers);
+                    console.log('state.answers' + state.answers);
+                    if (el[0] && (el[1] < QUICK_ANSWER)) {
+                        acc += 1;
+                    }
+                    return acc;
+                }, 0);
+            }
+            //повторяющийся элемент выпилить
+        slowAnswersCount(state) {
+                return state.answers.reduce((acc, el) => {
+                    if (el[0] && (el[1] > SLOW_ANSWER)) {
+                        acc += 1;
+                    }
+                    return acc;
+                }, 0);
+            }
+            //повторяющийся элемент выпилить
+        correctAnswersCount(state) {
+            return state.answers.reduce((acc, el) => {
+                if (el[0]) {
+                    acc += 1;
+                }
+                return acc;
+            }, 0);
+        }
+
+        totalScores(state) {
+            return gameData(state);
+        }
+
+        negativeLivesChecker(lives) {
+            return (lives < 0) ? 0 : lives;
+        }
+    }
+
+    class StatsBar extends AbstractView {
+        constructor(state) {
+            super();
+            this.state = state;
+            this.questionsCount = this.state.gameScreens.length;
+        }
+
+        get template() {
+                const blankStats = [];
+                const gameStats = [];
+
+                for (let i = 0; i < this.questionsCount; i += 1) {
+                    blankStats.push(`stats__result--unknown`);
+                }
+
+                const gameStatus = this.addClassOfResult(this.state, blankStats);
+                for (let i = 0; i < this.questionsCount; i += 1) {
+                    gameStats.push(`<li class="stats__result ${gameStatus[i]}"></li>`);
+                }
+
+                const statsHtml = `
+      <ul class="stats">
+        ${gameStats.join(``)}
+      </ul>`;
+
+        return statsHtml;
+      }
+
+      addClassOfResult(state, sourceArr) {
+        const resultArr = [...sourceArr];
+
+        if (state.answers.length < 1) {
+          return resultArr;
+        }
+        for (let i = 0; i < resultArr.length; i += 1) {
+          if (state.answers[i]) {
+            if (state.answers[i][0] && (state.answers[i][1] > QUICK_ANSWER && state.answers[i][1] < SLOW_ANSWER)) {
+              resultArr[i] = `stats__result--correct`;
+            }
+            if (state.answers[i][0] && state.answers[i][1] > SLOW_ANSWER) {
+              resultArr[i] = `stats__result--slow`;
+            }
+            if (state.answers[i][0] && state.answers[i][1] < QUICK_ANSWER) {
+              resultArr[i] = `stats__result--fast`;
+            }
+            if (!state.answers[i][0]) {
+              resultArr[i] = `stats__result--wrong`;
+            }
+          }
+        }
+        return resultArr;
+      }
+    }
+
+    class BackButton extends AbstractView {
+        constructor() {
+            super();
+        }
+
+        get template() {
+            return `<button class="back">
+    <span class="visually-hidden">Вернуться к началу</span>
+    <svg class="icon" width="45" height="45" viewBox="0 0 45 45" fill="#000000">
+      <use xlink:href="img/sprite.svg#arrow-left"></use>
+    </svg>
+    <svg class="icon" width="101" height="44" viewBox="0 0 101 44" fill="#000000">
+      <use xlink:href="img/sprite.svg#logo-small"></use>
+    </svg>
+    </button>`;
+        }
+    }
+
+    class Lives extends AbstractView {
+        constructor(lives) {
+            console.log(' lives-view ' + lives);
+
+            super();
+            this.lives = lives;
+        }
+
+        get template() {
+            const missedLives = new Array(INITIAL_STATE.lives - this.lives)
+                .fill(`<img src="img/heart__empty.svg" class="game__heart" alt=" Missed Life" width="31" height="27">`)
+                .join(``);
+            const lives = new Array(this.lives)
+                .fill(`<img src="img/heart__full.svg" class="game__heart" alt="Life" width="31" height="27">`)
+                .join(``);
+
+            return `
+    <div class="game__lives">
+      ${missedLives}
+      ${lives}
+    </div>`;
+        }
+    }
+
+    class Timer extends AbstractView {
+        constructor(time) { // разобраться и понять
+            super();
+            this.time = time;
+        }
+
+        get template() {
+            return `<div class="game__timer">${this.time}</div>`;
+        }
+    }
+
+    class Game1 extends AbstractView {
+        constructor(state) { // разобраться и понять
+            super();
+            this.state = state;
+            this._gameAnswer = null;
+            this._answers = [];
+        }
+
+        get template() {
+            const gameTask = `<p class="game__task">${this.state.gameScreens[this.state.level].question}</p>`;
+
+            return `
+    <header class="header">
+      ${new BackButton().template}
+      ${new Timer(this.state.time).template}
+      ${new Lives(this.state.lives).template}
+    </header>
+    <section class="game">
+    ${gameTask}
+      <form class="game__content">
+        <div class="game__option">
+          <img src="${this.state.gameScreens[this.state.level].answers[0].image.url}" alt="Option 1" width="468" height="458">
+          <label class="game__answer game__answer--photo">
+            <input class="visually-hidden" name="question1" type="radio" value="photo">
+            <span>Фото</span>
+          </label>
+          <label class="game__answer game__answer--paint">
+            <input class="visually-hidden" name="question1" type="radio" value="paint">
+            <span>Рисунок</span>
+          </label>
+        </div>
+        <div class="game__option">
+          <img src="${this.state.gameScreens[this.state.level].answers[1].image.url}" alt="Option 2" width="468" height="458">
+          <label class="game__answer  game__answer--photo">
+            <input class="visually-hidden" name="question2" type="radio" value="photo">
+            <span>Фото</span>
+          </label>
+          <label class="game__answer  game__answer--paint">
+            <input class="visually-hidden" name="question2" type="radio" value="paint">
+            <span>Рисунок</span>
+          </label>
+        </div>
+      </form>
+    </section>`;
+        }
+
+        get result() {
+            const answersTemp = [];
+            this._answers.forEach((el) => {
+                answersTemp.push(el[0] === el[1]);
+            });
+            this._gameAnswer = (answersTemp[0] === answersTemp[1]);
+            return this._gameAnswer;
+        }
+
+        convertAnswer(answer) {
+            const InputToAnswerType = {
+                paint: `painting`,
+                photo: `photo`
+            };
+            return InputToAnswerType[answer];
+        }
+
+        bind() {
+            const leftRadioGroup = [...this.element.querySelectorAll(`input[name=question1]`)];
+            const rightRadioGroup = [...this.element.querySelectorAll(`input[name=question2]`)];
+            const backButton = this.element.querySelector(`.back`);
+            const gameSection = this.element.querySelector(`.game`);
+            let isLeftPictureSelected = false;
+            let isRightPictureSelected = false;
+
+            gameSection.appendChild(new StatsBar(this.state).element);
+
+            const compareChecked = () => {
+                if (isLeftPictureSelected && isRightPictureSelected) {
+                    this.compareChecking();
+                }
+            };
+
+            leftRadioGroup.forEach((el) => {
+                const imageType = this.state.gameScreens[this.state.level].answers[0].type;
+                const answerType = this.convertAnswer(el.value);
+
+                el.addEventListener(`click`, () => {
+                    if (el.checked) {
+                        isLeftPictureSelected = true;
+                        this._answers[0] = [answerType, imageType];
+                    }
+                    compareChecked();
+                });
+            });
+
+            rightRadioGroup.forEach((el) => {
+                const imageType = this.state.gameScreens[this.state.level].answers[1].type;
+                const answerType = this.convertAnswer(el.value);
+
+                el.addEventListener(`click`, () => {
+                    if (el.checked) {
+                        isRightPictureSelected = true;
+                        this._answers[1] = [answerType, imageType];
+                    }
+                    compareChecked();
+                });
+            });
+
+            backButton.addEventListener(`click`, (e) => {
+                e.preventDefault();
+                this.onBackButtonClick();
+            });
+        }
+
+        onBackButtonClick() {}
+
+        compareChecking() {}
+
+        // updateTimer() {
+        //   const timer = this.element.querySelector(`.game__timer`);
+        //   timer.innerText = ``;
+        //   timer.innerText = this.model.getState.time;
+        // }
+    }
+
+    class Game2 extends AbstractView {
+        constructor(state) {
+            super();
+            this.state = state;
+            this._gameAnswer = null;
+            this._answers = [];
+        }
+
+        get template() {
+            const gameTask = `<p class="game__task">${this.state.gameScreens[this.state.level].question}</p>`;
+
+            return `
+      <header class="header">
+        ${new BackButton().template}
+        ${new Timer(this.state.time).template}
+        ${new Lives(this.state.lives).template}
+      </header>
+      <section class="game">
+        ${gameTask}
+        <form class="game__content  game__content--wide">
+          <div class="game__option">
+            <img src="${this.state.gameScreens[this.state.level].answers[0].image.url}" alt="Option 1" width="705" height="455">
+            <label class="game__answer  game__answer--photo">
+              <input class="visually-hidden" name="question1" type="radio" value="photo">
+              <span>Фото</span>
+            </label>
+            <label class="game__answer  game__answer--paint">
+              <input class="visually-hidden" name="question1" type="radio" value="paint">
+              <span>Рисунок</span>
+            </label>
+          </div>
+        </form>
+      </section>`;
+        }
+
+        get result() {
+            this._gameAnswer = (this._answers[0] === this._answers[1]);
+            return this._gameAnswer;
+        }
+
+        convertAnswer(answer) {
+            const InputToAnswerType = {
+                paint: `painting`,
+                photo: `photo`
+            };
+            return InputToAnswerType[answer];
+        }
+
+        bind() {
+            const form = this.element.querySelector(`.game__content`);
+            const backButton = this.element.querySelector(`.back`);
+            const gameSection = this.element.querySelector(`.game`);
+
+            const imageType = this.state.gameScreens[this.state.level].answers[0].type;
+
+            gameSection.appendChild(new StatsBar(this.state).element);
+
+            form.addEventListener(`change`, (e) => {
+                e.preventDefault();
+                const answerType = this.convertAnswer(e.target.value);
+                this._answers = [answerType, imageType];
+
+                this.onFormChange();
+            });
+
+            backButton.addEventListener(`click`, (e) => {
+                e.preventDefault();
+                this.onBackButtonClick();
+            });
+        }
+
+        onFormChange() {}
+
+        onBackButtonClick() {}
+    }
+
+    class Game3 extends AbstractView {
+        constructor(state) {
+            super();
+            this.state = state;
+            this._gameAnswer = null;
+            this._answers = [];
+        }
+
+        get template() {
+            const gameTask = `<p class="game__task">${this.state.gameScreens[this.state.level].question}</p>`;
+
+            return `
+      <header class="header">
+        ${new BackButton().template}
+        ${new Timer(this.state.time).template}
+        ${new Lives(this.state.lives).template}
+      </header>
+      <section class="game">
+        ${gameTask}
+        <form class="game__content  game__content--triple">
+          <div class="game__option">
+            <img src="${this.state.gameScreens[this.state.level].answers[0].image.url}" alt="Option 1" width="304" height="455">
+          </div>
+          <div class="game__option  game__option--selected">
+            <img src="${this.state.gameScreens[this.state.level].answers[1].image.url}" alt="Option 2" width="304" height="455">
+          </div>
+          <div class="game__option">
+            <img src="${this.state.gameScreens[this.state.level].answers[2].image.url}" alt="Option 3" width="304" height="455">
+          </div>
+        </form>
+      </section>
+    `;
+        }
+
+        get result() {
+            this._gameAnswer = (this._answers[0] === this._answers[1]);
+            return this._gameAnswer;
+        }
+
+        convertAnswer(answer) {
+            const InputToAnswerType = {
+                paint: `painting`,
+                photo: `photo`
+            };
+            return InputToAnswerType[answer];
+        }
+
+        questionType(question) {
+            if (question === `Найдите рисунок среди изображений`) {
+                return `painting`;
+            }
+            return `photo`;
+        }
+
+        bind() {
+            const gameOptions = [...this.element.querySelectorAll(`.game__option`)];
+            const backButton = this.element.querySelector(`.back`);
+            const gameSection = this.element.querySelector(`.game`);
+
+            gameSection.appendChild(new StatsBar(this.state).element);
+
+            gameOptions.forEach((el, i) => {
+                const answerType = this.state.gameScreens[this.state.level].answers[i].type;
+                const imageType = this.questionType(this.state.gameScreens[this.state.level].question);
+
+                el.addEventListener(`click`, () => {
+                    this._answers = [answerType, imageType];
+                    this.onImageClick();
+                });
+            });
+
+            backButton.addEventListener(`click`, (e) => {
+                e.preventDefault();
+                this.onBackButtonClick();
+            });
+        }
+
+        onBackButtonClick() {}
+
+        onImageClick() {}
+    }
+
+    class GameScreen {
+
+        constructor(model) { //разобраться и понять
+            this.model = model;
+            this.timer = null;
+        }
+
+        get element() {
+            return this.root;
+        }
+
+        init() {
+            this.model.resetGame();
+            this.updateRoot();
+            this.startTimer();
+        }
+
+        showScreenWithData(state) {
+            if (state.gameScreens[state.level].type === `two-of-two`) {
+                const game1 = new Game1(state);
+                game1.compareChecking = () => {
+                    this.model.addAnswer(game1.result, (INITIAL_STATE.time - state.time) * ONE_SECOND);
+                    this.changeLevel(state);
+                };
+                game1.onBackButtonClick = () => {
+                    Router.showGreeting();
+                };
+                return game1.element;
+            }
+            if (state.gameScreens[state.level].type === `tinder-like`) {
+                const game2 = new Game2(state);
+                game2.onFormChange = () => {
+                    this.model.addAnswer(game2.result, (INITIAL_STATE.time - state.time) * ONE_SECOND);
+                    this.changeLevel(state);
+                };
+                game2.onBackButtonClick = () => {
+                    Router.showGreeting();
+                };
+                return game2.element;
+            }
+            if (state.gameScreens[state.level].type === `one-of-three`) {
+                const game3 = new Game3(state);
+                game3.onImageClick = () => {
+                    this.model.addAnswer(game3.result, (INITIAL_STATE.time - state.time) * ONE_SECOND);
+                    this.changeLevel(state);
+                };
+                game3.onBackButtonClick = () => {
+                    Router.showGreeting();
+                };
+                return game3.element;
+            }
+            return ``;
+        }
+
+        changeLevel(state) {
+            this.stopTimer();
+            this.resetTimer();
+            this.model.changeGameLevel(state);
+            this.model.checkLivesCount(state);
+            this.checkGameOver(state);
+        }
+
+        checkGameOver(state) {
+            const lives = checkLives(state);
+            console.log(' state ' + state.answers);
+            const level = state.level;
+
+            if (level === INITIAL_STATE.questions || lives < 0) {
+                this.stopTimer();
+                this.saveGameStats(state);
+                return Router.showStats(state);
+            } else {
+                this.updateRoot();
+                this.startTimer();
+                return showScreen(this.element);
+            }
+        }
+
+        saveGameStats(state) {
+            const currentGameStats = { //Новая запись в массив
+                quickAnswersTotal: this.model.quickAnswersCount(state),
+                slowAnswersTotal: this.model.slowAnswersCount(state),
+                correctAnswersTotal: this.model.correctAnswersCount(state),
+                livesTotal: this.model.negativeLivesChecker(state.lives),
+                totalScores: this.model.totalScores(state),
+                statsBarHtml: Router.showStatsBar(state)
+            };
+
+            if (state.playedGames.length === INITIAL_STATE.savedGamesCount) {
+                state.playedGames.pop(INITIAL_STATE.savedGamesCount);
+                state.playedGames.unshift(currentGameStats);
+            } else {
+                state.playedGames.unshift(currentGameStats);
+            }
+        }
+
+        tick() {
+            if (this.model.getState.time) {
+                this.model.getState.time -= 1;
+                this.updateTimer();
+                this.blinking();
+            } else {
+                this.model.addAnswer(false, 0);
+                this.changeLevel(this.model.getState);
+                return true;
+            }
+            return false;
+        }
+
+        startTimer() {
+            this.timer = setTimeout(() => {
+                if (!this.tick()) {
+                    this.startTimer();
+                }
+            }, ONE_SECOND);
+        }
+
+        stopTimer() {
+            clearTimeout(this.timer);
+        }
+
+        resetTimer() {
+            this.model.getState.time = INITIAL_STATE.time;
+        }
+
+        updateTimer() {
+            this.rootTimer.innerText = ``;
+            this.rootTimer.innerText = this.model.getState.time;
+        }
+
+        updateRoot() {
+            this.root = this.showScreenWithData(this.model.getState);
+            this.rootTimer = this.root.querySelector(`.game__timer`);
+        }
+
+        blinking() {
+            if (this.model.getState.time <= 5) {
+                this.rootTimer.classList.add(`blink`);
+            }
+        }
+    }
+
+    class Stats extends AbstractView {
+        constructor(state) {
+            super();
+            this.state = state;
+        }
+
+        get template() {
+
+                const tableHtml = [];
+
+                this.state.playedGames.forEach((el) => {
+                    const getBonusHtml = () => {
+                        const bonusesHtml = `
+            <tr>
+              <td></td>
+              <td class="result__extra">Бонус за скорость:</td>
+              <td class="result__extra">${el.quickAnswersTotal} <span class="stats__result stats__result--fast"></span></td>
+              <td class="result__points">× ${Answer.QUICK}</td>
+              <td class="result__total">${el.quickAnswersTotal * Answer.QUICK}</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td class="result__extra">Бонус за жизни:</td>
+              <td class="result__extra">${el.livesTotal} <span class="stats__result stats__result--alive"></span></td>
+              <td class="result__points">× ${Answer.BONUS_FOR_LIVES}</td>
+              <td class="result__total">${el.livesTotal * Answer.BONUS_FOR_LIVES}</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td class="result__extra">Штраф за медлительность:</td>
+              <td class="result__extra">${el.slowAnswersTotal} <span class="stats__result stats__result--slow"></span></td>
+              <td class="result__points">× ${Answer.SLOW}</td>
+              <td class="result__total">-${el.slowAnswersTotal * Answer.SLOW}</td>
+            </tr>`;
+
+                        if (el.totalScores > 0) {
+                            return bonusesHtml;
+                        } else {
+                            return ``;
+                        }
+                    };
+
+                    const result = () => {
+                        return (el.totalScores > 0) ? el.totalScores : false;
+                    };
+
+                    const tableContent = `
+      <tr>
+          <td class="result__number">${this.state.playedGames.indexOf(el) + 1}</td>
+          <td colspan="2" class="result__stats">${el.statsBarHtml}</td>
+          <td class="result__points">× ${Answer.RIGHT}</td>
+          <td class="result__total">${el.correctAnswersTotal * Answer.RIGHT}</td>
+        </tr>
+          ${getBonusHtml()}
+        <tr>
+          <td colspan="5" class="result__total  result__total--final">${result()}</td>
+        </tr>`;
+
+                    tableHtml.push(tableContent);
+                });
+
+                const statsHtml = `
+      <header class="header">
+        ${new BackButton().template}
+      </header>
+      <section class="result">
+        <h2 class="result__title">Победа!</h2>
+        <table class="result__table">
+         ${tableHtml.join(``)}
+        </table>
+      </section>`;
+
+        return statsHtml;
+      }
+
+      bind() {
+        const backButton = this.element.querySelector(`.back`);
+
+        backButton.addEventListener(`click`, (e) => {
+          e.preventDefault();
+          this.onBackButtonClick();
+        });
+      }
+
+      onBackButtonClick() {}
+    }
+
+    class StatsScreen {
+      constructor(model) {
+        this.model = model;
+      }
+      get element() {
+        const statsScreen = new Stats(this.model);
+
+        statsScreen.onBackButtonClick = () => {
+          Router.showGreeting();
+        };
+
+        return statsScreen.element;
+      }
+    }
+
+    class StatsBarTemplate {
+      constructor(model) {
+        this.model = model;
+      }
+      get template() {
+        const statsBar = new StatsBar(this.model).template;
+
+        return statsBar;
+      }
+    }
+
+    class Router {
+        static showIntro() {
+            const introScreen = new IntroScreen();
+            showScreen(introScreen.element);
+        }
+
+        static showGreeting() {
+            const greetingScreen = new GreetingScreen();
+            showScreen(greetingScreen.element);
+        }
+
+        static showRules() {
+            const rulesScreen = new RulesScreen();
+            showScreen(rulesScreen.element);
+        }
+
+        static showGame() {
+            const model = new GameModel();
+            const gameScreen = new GameScreen(model);
+            gameScreen.init();
+            showScreen(gameScreen.element);
+        }
+
+        static showStats(state) {
+            const statsScreen = new StatsScreen(state);
+            showScreen(statsScreen.element);
+        }
+
+        static showStatsBar(state) {
+            const statsBar = new StatsBarTemplate(state);
+            return statsBar.template;
+        }
+    }
+
+    Router.showIntro();
 
 }());
 

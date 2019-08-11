@@ -1,9 +1,9 @@
 import { showScreen } from '../utils';
-import game2 from "./game-2";
 import game3 from "./game-3";
+import game1 from "./game-1";
 import stats from "./stats";
 import greeting from './greeting';
-import Intro from '../view/game-1-view';
+import Intro from '../view/game-2-view';
 import * as data from '../reducers';
 
 export default () => {
@@ -11,11 +11,9 @@ export default () => {
     intro.onButtonBackClick = () => {
         showScreen(greeting().element)
     };
-    intro.compareChecking = () => {
-        data.gamePlay.showGameScreen(intro, game2, game3)
-    };
-
-    // отрисовываем статистику
+    intro.showGame3 = () => {
+        data.gamePlay.showGameScreen(game1, intro, game3)
+    }
     intro.showStats = () => {
         showScreen(stats())
     }

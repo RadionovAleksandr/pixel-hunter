@@ -1,7 +1,7 @@
 import backBtnTemplate from "../back-btn-template";
 import AbstractView from "./AbstractView";
 
-export default class Intro extends AbstractView {
+export default class Rules extends AbstractView {
     constructor() { //разобраться и понять
         super()
     };
